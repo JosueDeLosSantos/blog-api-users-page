@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import codeImage from "../../public/images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
@@ -67,7 +67,7 @@ function LogIn() {
 				}
 			}
 		} catch (error) {
-			navigate("/server-error"); // Network Error
+			navigate("/server-error");
 		}
 	}
 

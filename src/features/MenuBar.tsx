@@ -37,9 +37,6 @@ export default function MenuBar() {
 			case "Sign Up":
 				navigate("/sign-up");
 				break;
-			case "Create post":
-				navigate("/posts/create");
-				break;
 			case "All post":
 				navigate("/");
 				break;
@@ -101,17 +98,7 @@ export default function MenuBar() {
 								All post
 							</MenuItem>
 						)}
-						{member === "admin" && (
-							<MenuItem
-								sx={{
-									fontSize: "1rem",
-									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
-								}}
-								onClick={(e) => handleClose(e)}
-							>
-								Create post
-							</MenuItem>
-						)}
+
 						{member === "user" && (
 							<MenuItem
 								sx={{
