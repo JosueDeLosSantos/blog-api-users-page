@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { v4 as uuidv4 } from "uuid";
 
 type commentType = {
@@ -51,9 +51,18 @@ function CommentsBox({
 		e.preventDefault();
 		// http://localhost:3000/
 		// https://dummy-blog.adaptable.app/comments
-		const apiUrl = "http://localhost:3000/comments";
+		const apiUrl = "http://localhost:3000/user/comments";
 		try {
-			const response = await axios.post(apiUrl, formData);
+			// get security token
+			const jwtToken = localStorage.getItem("accessToken");
+			const headers: Record<string, string> = {};
+			if (jwtToken) {
+				headers["Authorization"] = `Bearer ${jwtToken}`;
+			}
+
+			const response = await axios.post(apiUrl, formData, {
+				headers: headers
+			});
 
 			/* If no errors are returned, add a date to the most recent added comment to keep 
 			the page updated */
@@ -94,7 +103,16 @@ function CommentsBox({
 				setErrors(newErrors);
 			}
 		} catch (error) {
-			navigate("/server-error");
+			const axiosError = error as AxiosError;
+
+			if (
+				axiosError?.response?.status === 403 ||
+				axiosError?.response?.status === 401
+			) {
+				navigate("/log-in");
+			} else {
+				navigate("/server-error");
+			}
 		}
 	}
 
