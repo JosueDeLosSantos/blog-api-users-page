@@ -44,7 +44,8 @@ type commentType = {
 function Post() {
 	const dispatch: AppDispatch = useDispatch();
 	const member = useSelector((state: RootState) => state.privilege);
-	const [post, setPost] = useState<onePostType | null>(null);
+	const initialPost = null as unknown as onePostType;
+	const [post, setPost] = useState<onePostType>(initialPost);
 	const navigate = useNavigate();
 
 	// position the scroll at the top of the page
@@ -91,7 +92,6 @@ function Post() {
 					headers: headers
 				});
 
-				console.log(server, response);
 				dispatch(switchPrivilege("admin"));
 				setPost(response.data.post);
 			} catch (error) {
@@ -122,10 +122,13 @@ function Post() {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// MARK: return
+
 	return (
-		<div className='bg-slate-100'>
+		<div className='bg-slate-100 min-h-screen'>
 			<MenuBar />
 			<main className='pl-5 pr-5 pb-5 pt-24 flex gap-4'>
 				{member === "admin" && (
@@ -208,15 +211,6 @@ function Post() {
 							}}
 						/>
 					)}
-					{/* Post's content */}
-					{post?.post && (
-						<div
-							className='max-w-screen-md border-b-[0.5px] border-t-0 border-l-0 border-r-0 border-solid border-slate-200 mx-auto sm:mt-5 md:mt-8 p-5'
-							dangerouslySetInnerHTML={{
-								__html: he.decode(post.post) // renders decoded HTML
-							}}
-						/>
-					)}
 					{/* Comment's box */}
 					{member === "admin" && post?.post && (
 						<CommentsBox
@@ -225,9 +219,11 @@ function Post() {
 						/>
 					)}
 					<div id='comments-box' className='max-w-screen-md mx-auto'>
-						<div className='text-center mx-auto'>
-							<h2>Comments</h2>
-						</div>
+						{post?.comments?.length > 0 && (
+							<div className='text-center mx-auto'>
+								<h2>Comments</h2>
+							</div>
+						)}
 						{member === "user" && (
 							<div className='mx-auto w-11/12 pt-5 pr-5 pl-5 pb-10 text-slate-600'>
 								If you want to leave a comment{" "}
@@ -239,9 +235,9 @@ function Post() {
 								</Link>
 							</div>
 						)}
-						{post?.comments.map((comment, i) => (
+						{post?.comments.map((comment) => (
 							<div
-								key={i}
+								key={comment._id}
 								className='box-border w-11/12 mb-8 mx-auto border-solid border border-slate-300 p-5 rounded-lg'
 							>
 								<div className='max-[370px]:flex-col max-[370px]:gap-0 flex gap-2 items-end h-5 mb-5'>
