@@ -1,16 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
-
-type commentType = {
-	_id: string;
-	comment: string;
-	date: string;
-	email: string;
-	name: string;
-	post: string;
-	__v: number;
-};
+import { commentType } from "../components/Post";
 
 function CommentsBox({
 	post_id,
@@ -23,6 +14,7 @@ function CommentsBox({
 	const [formData, setFormData] = useState({
 		_id: "",
 		comment: "",
+		author: "",
 		name: "",
 		email: "",
 		date: "",
@@ -58,6 +50,7 @@ function CommentsBox({
 			the page updated */
 			if (!response.data.errors) {
 				formData.date = response.data.post.comments[0].date;
+				formData.author = response.data.user._id;
 				formData._id = response.data.post.comments[0]._id;
 				formData.name = `${response.data.post.user.first_name} ${response.data.post.user.last_name}`;
 				formData.email = response.data.post.user.email;
@@ -68,6 +61,7 @@ function CommentsBox({
 				setFormData({
 					_id: "",
 					comment: "",
+					author: `${response.data.user._id}`,
 					name: `${response.data.post.user.first_name} ${response.data.post.user.last_name}`,
 					email: response.data.post.user.email,
 					date: "",

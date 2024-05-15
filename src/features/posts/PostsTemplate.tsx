@@ -2,7 +2,6 @@ import MenuBar from "../MenuBar";
 import { SyntheticEvent, useEffect, useRef, useState, Suspense } from "react";
 import { postTypes } from "./types";
 import ColorThief from "colorthief";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
 import postsAmountController from "./postsAmountController";
@@ -143,7 +142,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 										{post.date}
 									</span>
 									<div>
-										<p className='text-lg line-clamp-4 sm:text-xl md:text-1xl lg:text-2xl max-lg:mt-0'>
+										<p className='prose text-lg line-clamp-4 sm:text-xl md:text-1xl lg:text-2xl max-lg:mt-0'>
 											{he.decode(post.description)}
 										</p>
 									</div>
