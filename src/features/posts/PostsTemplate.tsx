@@ -98,6 +98,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 		};
 	}, [postsCopy, posts]);
 
+	// MARK: return
 	return (
 		<div className='bg-slate-100 min-h-screen max-h-auto'>
 			<MenuBar />

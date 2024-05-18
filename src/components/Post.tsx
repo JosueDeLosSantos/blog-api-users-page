@@ -49,12 +49,23 @@ function Post() {
 	const initialPost = null as unknown as onePostType;
 	const [post, setPost] = useState<onePostType>(initialPost);
 	const navigate = useNavigate();
+	const [isEditing, setIsEditing] = useState(false);
+	const [commentToEdit, setCommentToEdit] = useState<commentType>({
+		_id: "",
+		comment: "",
+		author: "",
+		name: "",
+		email: "",
+		date: "",
+		post: "",
+		__v: 0
+	});
 
 	// position the scroll at the top of the page
-	window.scrollTo(0, 0);
+	// window.scrollTo(0, 0);
 
 	// keep comments array updated to avoid unnecessary API calls
-	function commentsAction(arg: commentType) {
+	function addComment(arg: commentType) {
 		// Change array's order to show the most recent one on the top
 		if (post) {
 			setPost({ ...post, comments: [arg, ...post.comments] });
@@ -108,6 +119,7 @@ function Post() {
 				dispatch(switchPrivilege("admin"));
 				setUser(response.data.user);
 				setPost(response.data.post);
+				setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
 			} catch (error) {
 				const axiosError = error as AxiosError;
 
@@ -139,7 +151,7 @@ function Post() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// MARK: Delete and Edit buttons
+	// MARK: Delete/Edit buttons
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -155,7 +167,7 @@ function Post() {
 				deleteComment(anchorEl!.id);
 				break;
 			case "Edit":
-				console.log("Edited");
+				editComment(anchorEl!.id);
 				break;
 			default:
 				setAnchorEl(null);
@@ -189,6 +201,21 @@ function Post() {
 		}
 	}
 
+	function editComment(commentId: string) {
+		const selectedComment = post.comments.filter(
+			(comment) => comment._id === commentId
+		)[0];
+		setAnchorEl(null);
+		setIsEditing(true);
+		setCommentToEdit(selectedComment);
+
+		const commentsBoxSection = document.getElementById("edit-comment-box");
+		window.scrollTo({
+			top: commentsBoxSection?.offsetTop,
+			behavior: "smooth"
+		});
+	}
+
 	// MARK: return
 
 	return (
@@ -201,7 +228,7 @@ function Post() {
 							className={
 								windowWidth > 770
 									? "pt-10 w-fit h-screen fixed flex flex-col gap-8"
-									: "bg-white p-2 fixed bottom-0 left-0 w-screen shadow-[0px_-0.5px_5px_rgb(148,163,184)] flex justify-around"
+									: "bg-white z-50 p-2 fixed bottom-0 left-0 w-screen shadow-[0px_-0.5px_5px_rgb(148,163,184)] flex justify-around"
 							}
 						>
 							<div>
@@ -278,7 +305,11 @@ function Post() {
 					{/* Comment's box */}
 					{member === "admin" && post?.post && (
 						<CommentsBox
-							commentsAction={commentsAction}
+							formData={commentToEdit}
+							setFormData={setCommentToEdit}
+							setIsEditing={setIsEditing}
+							isEditing={isEditing}
+							addComment={addComment}
 							post_id={`${post._id}`}
 						/>
 					)}
