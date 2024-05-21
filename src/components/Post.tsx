@@ -310,6 +310,7 @@ function Post() {
 							setIsEditing={setIsEditing}
 							isEditing={isEditing}
 							addComment={addComment}
+							setPost={setPost}
 							post_id={`${post._id}`}
 						/>
 					)}

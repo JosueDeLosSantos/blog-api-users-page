@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import he from "he";
 import axios, { AxiosError } from "axios";
 import { commentType } from "../components/Post";
+import { onePostType } from "./posts/types";
 
 function CommentsBox({
 	post_id,
@@ -10,7 +11,8 @@ function CommentsBox({
 	isEditing,
 	setIsEditing,
 	setFormData,
-	addComment
+	addComment,
+	setPost
 }: {
 	post_id: string;
 	formData: commentType;
@@ -18,6 +20,7 @@ function CommentsBox({
 	setIsEditing: (arg: boolean) => void;
 	setFormData: (arg: commentType) => void;
 	addComment: (arg: commentType) => void;
+	setPost: (arg: onePostType) => void;
 }) {
 	const navigate = useNavigate();
 
@@ -30,6 +33,17 @@ function CommentsBox({
 	// MARK: onSubmit
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
+
+		// get security token
+		const jwtToken = localStorage.getItem("accessToken");
+		const headers: Record<string, string> = {};
+		if (jwtToken) {
+			headers["Authorization"] = `Bearer ${jwtToken}`;
+		}
+		// http://localhost:3000/
+		// https://dummy-blog.adaptable.app/comments
+		const apiUrl = "http://localhost:3000/user/comments";
+
 		if (isEditing) {
 			const target = e.target as HTMLElement;
 			if (target.innerText === "Cancel") {
@@ -44,21 +58,50 @@ function CommentsBox({
 					post: post_id,
 					__v: 0
 				});
+				setCommentError("");
 			} else {
-				console.log(formData);
+				try {
+					const response = await axios.put(apiUrl, formData, {
+						headers: headers
+					});
+
+					/* If no errors are returned, add a date and id to the most recent added comment to keep 
+					the page updated */
+					if (!response.data.errors) {
+						// clear errors
+						setCommentError("");
+						// update post
+						setPost(response.data.post);
+						setIsEditing(false);
+						// clear form fields
+						setFormData({
+							_id: "",
+							comment: "",
+							author: "",
+							name: "",
+							email: "",
+							date: "",
+							post: post_id,
+							__v: 0
+						});
+					} else {
+						setCommentError(response.data.errors[0].msg);
+					}
+				} catch (error) {
+					const axiosError = error as AxiosError;
+
+					if (
+						axiosError?.response?.status === 403 ||
+						axiosError?.response?.status === 401
+					) {
+						navigate("/log-in");
+					} else {
+						navigate("/server-error");
+					}
+				}
 			}
 		} else {
-			// http://localhost:3000/
-			// https://dummy-blog.adaptable.app/comments
-			const apiUrl = "http://localhost:3000/user/comments";
 			try {
-				// get security token
-				const jwtToken = localStorage.getItem("accessToken");
-				const headers: Record<string, string> = {};
-				if (jwtToken) {
-					headers["Authorization"] = `Bearer ${jwtToken}`;
-				}
-
 				const response = await axios.post(apiUrl, formData, {
 					headers: headers
 				});
@@ -69,8 +112,8 @@ function CommentsBox({
 					formData.date = response.data.post.comments[0].date;
 					formData.author = response.data.user._id;
 					formData._id = response.data.post.comments[0]._id;
-					formData.name = `${response.data.post.user.first_name} ${response.data.post.user.last_name}`;
-					formData.email = response.data.post.user.email;
+					formData.name = `${response.data.user.first_name} ${response.data.user.last_name}`;
+					formData.email = response.data.user.email;
 
 					// update comments array
 					addComment(formData);
@@ -78,9 +121,9 @@ function CommentsBox({
 					setFormData({
 						_id: "",
 						comment: "",
-						author: `${response.data.user._id}`,
-						name: `${response.data.post.user.first_name} ${response.data.post.user.last_name}`,
-						email: response.data.post.user.email,
+						author: "",
+						name: "",
+						email: "",
 						date: "",
 						post: post_id,
 						__v: 0
