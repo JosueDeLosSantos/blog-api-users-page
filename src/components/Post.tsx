@@ -17,6 +17,7 @@ import { AppDispatch } from "../app/store";
 import { switchPrivilege } from "../features/posts/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
+import useWindowSize from "../features/windowSize";
 
 const theme = createTheme({
   palette: {
@@ -88,8 +89,6 @@ function Post() {
     }
   }
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   type userType = {
     email: string;
     exp: number;
@@ -138,17 +137,6 @@ function Post() {
       }
     })();
 
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-
-    // Remove event listener on cleanup
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -216,6 +204,8 @@ function Post() {
       behavior: "smooth",
     });
   }
+
+  const { windowWidth } = useWindowSize();
 
   // MARK: return
 
@@ -419,7 +409,7 @@ function Post() {
       </main>
       {member === "user" && (
         <span onClick={() => ScrollTo("comments")}>
-          <div className="fixed bottom-5 left-5 w-fit rounded-full bg-neutral-950 p-3 dark:bg-purple-700">
+          <div className="fixed bottom-5 left-5 w-fit cursor-pointer rounded-full bg-neutral-950 p-3 dark:bg-purple-700">
             <ThemeProvider theme={theme}>
               {post?.comments && (
                 <Badge badgeContent={post.comments.length} color="primary">

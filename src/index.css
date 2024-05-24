@@ -20,11 +20,15 @@ body {
   h3,
   h4,
   .icons {
-    color: #333 !important; /* Example color for light mode */
+    color: #333 !important;
   }
 
   .logo {
     color: #721ea3 !important;
+  }
+
+  html {
+    background-color: rgb(241, 245, 249, 1) !important;
   }
 }
 
@@ -39,11 +43,15 @@ body {
   h4,
   .icons,
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
-    color: #fff !important; /* Example color for dark mode */
+    color: rgb(241, 245, 249, 1) !important;
   }
 
   .logo {
     color: #e0abff !important;
+  }
+
+  html {
+    background-color: rgb(2, 6, 23, 1) !important;
   }
 
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
