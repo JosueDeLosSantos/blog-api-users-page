@@ -1,4 +1,5 @@
 import MenuBar from "../MenuBar";
+import MenuBarLarge from "../MenuBarLarge";
 import { SyntheticEvent, useEffect, useRef, useState, Suspense } from "react";
 import { postTypes } from "./types";
 import ColorThief from "colorthief";
@@ -6,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
 import postsAmountController from "./postsAmountController";
 import SkeletonPostsPage from "../SkeletonPostsPage";
-import MenuBarLarge from "../MenuBarLarge";
 import useWindowSize from "../windowSize";
 
 function postsInitialValue(v: postTypes[]) {
@@ -74,6 +74,7 @@ function PostsTemplate({
   const parentRef = useRef(Array(posts?.length).fill(null));
   const navigate = useNavigate();
 
+  // MARK: post click
   const postClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     parentRef.current.forEach((el) => {
       if (el && el.contains(e.target)) {
@@ -111,10 +112,11 @@ function PostsTemplate({
   const { windowWidth } = useWindowSize();
 
   // MARK: return
+
   return (
     <div className="max-h-auto min-h-screen bg-slate-100 dark:bg-slate-950">
-      {windowWidth < 769 && <MenuBar />}
-      {windowWidth > 768 && <MenuBarLarge />}
+      {windowWidth <= 768 && <MenuBar />}
+      {windowWidth >= 769 && <MenuBarLarge />}
 
       <div className="mx-auto w-fit pt-24">
         <Suspense fallback={<SkeletonPostsPage />}>
@@ -124,10 +126,10 @@ function PostsTemplate({
                 id={post._id}
                 ref={(el) => (parentRef.current[index] = el)}
                 onClick={(e) => postClick(e)}
-                className="sm:mx-h-60 mx-5 mb-2 flex max-h-40 max-w-screen-lg cursor-pointer flex-col rounded-lg border border-solid border-slate-200 bg-white p-2 sm:gap-1 md:max-h-64 md:flex-col md:gap-2 lg:flex-row lg:gap-4 dark:border-slate-950 dark:bg-slate-800"
+                className="mx-5 mb-2 flex max-w-screen-lg cursor-pointer flex-col rounded-lg border border-solid border-slate-200 bg-white p-2 sm:gap-1 md:flex-col md:gap-2 lg:flex-row lg:gap-4 dark:border-slate-950 dark:bg-slate-800"
                 key={post._id}
               >
-                <div className="relative w-full md:w-full lg:w-1/2">
+                <div className="relative w-full lg:w-1/2">
                   {post.file !== null && (
                     <img
                       onLoad={(e) => setTitleColor(e)}
@@ -148,7 +150,6 @@ function PostsTemplate({
                     </h2>
                   </div>
                 </div>
-
                 <div className="w-full md:w-full  lg:w-1/2">
                   <h2 className="sm:text-1xl mb-2 mt-1 hidden text-xl md:text-2xl lg:block">
                     {he.decode(post.title)}
@@ -156,8 +157,8 @@ function PostsTemplate({
                   <span className="text-xs italic text-gray-500 md:text-base dark:text-gray-300">
                     {post.date}
                   </span>
-                  <div className="mt-2">
-                    <p className="md:text-1xl prose line-clamp-6 text-lg max-lg:mt-0 sm:text-xl dark:text-white">
+                  <div className="max-lg:mt-2">
+                    <p className="md:text-1xl prose mb-0 line-clamp-6 text-lg max-lg:mt-0 sm:text-xl dark:text-white">
                       {he.decode(post.description)}
                     </p>
                   </div>

@@ -18,6 +18,7 @@ import { switchPrivilege } from "../features/posts/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import useWindowSize from "../features/windowSize";
+import MenuBarLarge from "../features/MenuBarLarge";
 
 const theme = createTheme({
   palette: {
@@ -211,7 +212,9 @@ function Post() {
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      <MenuBar />
+      {windowWidth < 769 && <MenuBar />}
+      {windowWidth > 768 && <MenuBarLarge />}
+
       <main className="flex gap-4 pb-5 pl-5 pr-5 pt-24">
         {member === "admin" && (
           <ThemeProvider theme={theme}>
@@ -333,12 +336,12 @@ function Post() {
           )}
           <div id="comments-box" className="mx-auto max-w-screen-md">
             {post?.comments?.length > 0 && (
-              <div className="mx-auto text-center">
+              <div className="mx-auto mt-10 text-center">
                 <h2>Comments</h2>
               </div>
             )}
             {member === "user" && (
-              <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-5 text-slate-600 dark:text-slate-300">
+              <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-10 text-slate-600 dark:text-slate-300">
                 If you want to leave a comment{" "}
                 <Link
                   className="font-bold text-slate-800 no-underline dark:text-white"
@@ -401,7 +404,18 @@ function Post() {
                     </div>
                   )}
                 </div>
-                <div className="text-base">{he.decode(comment.comment)}</div>
+                <div className="truncate text-pretty text-base">
+                  {/* Converts avery \n into a paragraph */}
+                  {comment.comment
+                    .split("\n")
+                    .map((line, i) =>
+                      line === "" ? (
+                        <br key={`${comment._id}${i}`} />
+                      ) : (
+                        <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
+                      ),
+                    )}
+                </div>
               </div>
             ))}
           </div>

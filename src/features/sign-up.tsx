@@ -100,7 +100,7 @@ function SignUp() {
   }
   // MARK: return
   return (
-    <div className="container mx-auto mt-14 flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow dark:bg-slate-700">
+    <div className="container mx-auto flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow xl:mt-14 dark:bg-slate-700">
       <div className="w-full p-8">
         <h1 className="mb-10 text-center font-PressStart2P text-xl">
           <Link
@@ -131,6 +131,7 @@ function SignUp() {
               name="first_name"
               type="text"
               placeholder="Your first name"
+              maxLength={40}
               onInput={handleInputChange}
               value={formData.first_name}
             />
@@ -152,6 +153,7 @@ function SignUp() {
               placeholder="Your last name"
               onInput={handleInputChange}
               value={formData.last_name}
+              maxLength={70}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.last_name}
@@ -171,6 +173,7 @@ function SignUp() {
               placeholder="Your email address"
               onInput={handleInputChange}
               value={formData.email}
+              maxLength={120}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.email}
@@ -190,6 +193,7 @@ function SignUp() {
               placeholder="Your username"
               onInput={handleInputChange}
               value={formData.username}
+              maxLength={80}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.username}
@@ -209,6 +213,7 @@ function SignUp() {
               placeholder="Your password"
               onInput={handleInputChange}
               value={formData.password}
+              maxLength={70}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.password}
@@ -228,6 +233,7 @@ function SignUp() {
               placeholder="Confirm your password"
               onInput={handleInputChange}
               value={formData.passwordConfirmation}
+              maxLength={70}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.passwordConfirmation}

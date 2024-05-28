@@ -12,7 +12,7 @@ import { switchPrivilege } from "./posts/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";
-import useWindowSize from "./windowSize";
+import useWindowSize from "../features/windowSize";
 
 export default function MenuBar() {
   const dispatch: AppDispatch = useDispatch();
@@ -25,31 +25,33 @@ export default function MenuBar() {
   const navigate = useNavigate();
   const handleClose = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
-    const { innerText } = target;
 
-    switch (innerText) {
-      case "Logout":
-        dispatch(switchPrivilege("user"));
-        localStorage.removeItem("accessToken");
+    switch (target.dataset.menuitem) {
+      case "0": // Home
         navigate("/");
         break;
-      case "Login":
+      case "1": // All Posts
+        navigate("/posts");
+        break;
+      case "2": // Login
         navigate("/log-in");
         break;
-      case "Sign Up":
+      case "3": // Sign Up
         navigate("/sign-up");
         break;
-      case "All post":
-        navigate("/");
+      case "4": // Logout
+        dispatch(switchPrivilege("user"));
+        localStorage.removeItem("accessToken");
+        navigate("/posts");
         break;
       default:
         setAnchorEl(null);
     }
   };
 
-  const { windowWidth } = useWindowSize();
-
   // MARK: return
+
+  const { windowWidth } = useWindowSize();
 
   return (
     <Box>
@@ -66,7 +68,7 @@ export default function MenuBar() {
             onClick={handleClick}
             sx={{ mr: 2, color: "black" }}
           >
-            <MenuIcon fontSize={windowWidth > 350 ? "large" : "medium"} />
+            <MenuIcon fontSize={windowWidth >= 640 ? "large" : "medium"} />
           </IconButton>
           <Menu
             id="basic-menu"
@@ -78,20 +80,34 @@ export default function MenuBar() {
               "aria-labelledby": "basic-button",
             }}
           >
+            {member === "user" && (
+              <MenuItem
+                data-menuitem="0"
+                sx={{
+                  fontSize: "1rem",
+                  borderBottom: "1px solid #e0e0e0",
+                }}
+                onClick={(e) => handleClose(e)}
+              >
+                Home
+              </MenuItem>
+            )}
             {member && (
               <MenuItem
+                data-menuitem="1"
                 sx={{
                   fontSize: "1rem",
                   borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
                 }}
                 onClick={(e) => handleClose(e)}
               >
-                All post
+                All Posts
               </MenuItem>
             )}
 
             {member === "user" && (
               <MenuItem
+                data-menuitem="2"
                 sx={{
                   fontSize: "1rem",
                   borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
@@ -103,6 +119,7 @@ export default function MenuBar() {
             )}
             {member === "user" && (
               <MenuItem
+                data-menuitem="3"
                 sx={{
                   fontSize: "1rem",
                 }}
@@ -113,6 +130,7 @@ export default function MenuBar() {
             )}
             {member === "admin" && (
               <MenuItem
+                data-menuitem="4"
                 sx={{
                   fontSize: "1rem",
                 }}
@@ -125,7 +143,7 @@ export default function MenuBar() {
           <Typography
             variant="h6"
             component="div"
-            className="logo mx-sm:text-xl w-full text-center font-PressStart2P lg:text-2xl"
+            className="logo w-full text-center font-PressStart2P text-xs sm:text-sm"
             sx={{
               color: "#721ea3",
             }}

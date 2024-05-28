@@ -40,7 +40,7 @@ function LogIn() {
       if (response.data.accessToken) {
         localStorage.setItem("accessToken", `${response.data.accessToken}`);
         dispatch(switchPrivilege("admin"));
-        navigate("/"); // Redirect to desired page after successful login
+        navigate("/posts"); // Redirect to desired page after successful login
       } else {
         if (response.data.errors) {
           const newErrors = { username: "", password: "" };
@@ -73,8 +73,10 @@ function LogIn() {
     }
   }
 
+  // MARK: return
+
   return (
-    <div className="container mx-auto mt-16 flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl dark:bg-slate-700">
+    <div className="container absolute left-[50%] top-[50%] mx-auto flex max-w-md translate-x-[-50%] translate-y-[-70%] overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl dark:bg-slate-700">
       <div className="relative hidden h-full xl:block xl:w-1/2">
         <img
           className="absolute h-auto w-full object-cover"
@@ -120,6 +122,7 @@ function LogIn() {
               placeholder="Your username"
               onInput={handleInputChange}
               value={formData.username}
+              maxLength={80}
               required
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
@@ -140,6 +143,7 @@ function LogIn() {
               placeholder="Your password"
               onInput={handleInputChange}
               value={formData.password}
+              maxLength={70}
               required
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
@@ -161,7 +165,7 @@ function LogIn() {
           </div>
           <div className="mt-5 flex w-full">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/posts")}
               className="py h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
               type="button"
             >

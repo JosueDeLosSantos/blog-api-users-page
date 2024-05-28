@@ -4,6 +4,7 @@ import he from "he";
 import axios, { AxiosError } from "axios";
 import { commentType } from "../components/Post";
 import { onePostType } from "./posts/types";
+import TextareaAutosize from "react-textarea-autosize";
 
 function CommentsBox({
   post_id,
@@ -161,15 +162,18 @@ function CommentsBox({
             Leave a Comment
           </h2>
           <div className="w-full">
-            <textarea
+            <TextareaAutosize
               name="comment"
               onInput={handleCommentChange}
-              className="mb-3 box-border w-full resize-none rounded-sm border border-solid border-slate-300 bg-slate-100 px-3 py-2  focus:border-blue-300  focus:outline-none dark:bg-slate-950"
+              maxLength={3000}
+              className="box-border w-full resize-none rounded-sm border border-solid border-slate-300 bg-slate-100 px-3 py-2  focus:border-blue-300  focus:outline-none dark:bg-slate-950"
               placeholder="Type Comment...*"
-              rows={5}
+              minRows={5}
               value={he.decode(formData.comment)}
               required
-            ></textarea>
+            ></TextareaAutosize>
+            <span className="text-sm text-gray-400">{`${formData.comment.length}/3000`}</span>
+            <br />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {commentError}
             </span>
@@ -186,7 +190,7 @@ function CommentsBox({
             </div>
           )}
           {isEditing && (
-            <div className="box-border flex gap-2 sm:gap-3">
+            <div className="mt-4 box-border flex gap-2 sm:gap-3">
               <button
                 onClick={onSubmit}
                 type="button"
