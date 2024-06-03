@@ -7,6 +7,8 @@ import Post from "../pages/Post";
 import ServerError from "../pages/ServerError";
 import LogIn from "../pages/log-in";
 import SignUp from "../pages/sign-up";
+import Profile from "../pages/Profile";
+``;
 
 // POSTS
 import { useDispatch, useSelector } from "react-redux";
@@ -92,6 +94,10 @@ const Router = () => {
         {
           path: "sign-up",
           element: <SignUp />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
         },
         {
           path: "server-error",

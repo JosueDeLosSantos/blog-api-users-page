@@ -39,7 +39,10 @@ export default function MenuBar() {
       case "3": // Sign Up
         navigate("/sign-up");
         break;
-      case "4": // Logout
+      case "4": // Sign Up
+        navigate("/profile");
+        break;
+      case "5": // Logout
         dispatch(switchPrivilege("user"));
         localStorage.removeItem("accessToken");
         navigate("/posts");
@@ -95,6 +98,7 @@ export default function MenuBar() {
             {member && (
               <MenuItem
                 data-menuitem="1"
+                className="antialiased"
                 sx={{
                   fontSize: "1rem",
                   borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
@@ -131,6 +135,18 @@ export default function MenuBar() {
             {member === "admin" && (
               <MenuItem
                 data-menuitem="4"
+                sx={{
+                  fontSize: "1rem",
+                  borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
+                }}
+                onClick={(e) => handleClose(e)}
+              >
+                profile
+              </MenuItem>
+            )}
+            {member === "admin" && (
+              <MenuItem
+                data-menuitem="5"
                 sx={{
                   fontSize: "1rem",
                 }}

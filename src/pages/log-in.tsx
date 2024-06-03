@@ -116,7 +116,7 @@ function LogIn() {
               Username
             </label>
             <input
-              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="username"
               type="text"
               placeholder="Your username"
@@ -137,7 +137,7 @@ function LogIn() {
               Password
             </label>
             <input
-              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-400 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-400 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="password"
               type="password"
               placeholder="Your password"

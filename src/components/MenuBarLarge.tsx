@@ -29,7 +29,10 @@ export default function MenuBar() {
       case "3": // Sign Up
         navigate("/sign-up");
         break;
-      case "4": // Logout
+      case "4": // Sign Up
+        navigate("/profile");
+        break;
+      case "5": // Logout
         dispatch(switchPrivilege("user"));
         localStorage.removeItem("accessToken");
         navigate("/posts");
@@ -51,11 +54,11 @@ export default function MenuBar() {
           <div className="logo mx-sm:text-xl font-PressStart2P text-[#721ea3] lg:text-2xl">
             {"<JCODER>"}
           </div>
-          <div className="flex min-w-[75%] items-center justify-between divide-x divide-y-0 divide-solid text-center text-black xl:text-lg dark:divide-slate-50 dark:text-slate-100">
+          <div className="flex min-w-[50%] items-center justify-between divide-x divide-y-0 divide-solid text-center text-black xl:text-lg dark:divide-slate-50 dark:text-slate-100">
             {member === "user" && (
               <div
                 data-menuitem="0"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
                 onClick={(e) => handleClick(e)}
               >
                 Home
@@ -64,7 +67,7 @@ export default function MenuBar() {
             {member && (
               <div
                 data-menuitem="1"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
                 onClick={(e) => handleClick(e)}
               >
                 All Posts
@@ -74,7 +77,7 @@ export default function MenuBar() {
             {member === "user" && (
               <div
                 data-menuitem="2"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
                 onClick={(e) => handleClick(e)}
               >
                 Login
@@ -83,7 +86,7 @@ export default function MenuBar() {
             {member === "user" && (
               <div
                 data-menuitem="3"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
                 onClick={(e) => handleClick(e)}
               >
                 Sign Up
@@ -92,7 +95,16 @@ export default function MenuBar() {
             {member === "admin" && (
               <div
                 data-menuitem="4"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
+                onClick={(e) => handleClick(e)}
+              >
+                Profile
+              </div>
+            )}
+            {member === "admin" && (
+              <div
+                data-menuitem="5"
+                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
                 onClick={(e) => handleClick(e)}
               >
                 Logout

@@ -127,7 +127,7 @@ function SignUp() {
               First Name
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="first_name"
               type="text"
               placeholder="Your first name"
@@ -147,7 +147,7 @@ function SignUp() {
               Last Name
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="last_name"
               type="text"
               placeholder="Your last name"
@@ -167,7 +167,7 @@ function SignUp() {
               Email
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="email"
               type="text"
               placeholder="Your email address"
@@ -187,7 +187,7 @@ function SignUp() {
               Username
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="username"
               type="text"
               placeholder="Your username"
@@ -207,7 +207,7 @@ function SignUp() {
               Password
             </label>
             <input
-              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="password"
               type="password"
               placeholder="Your password"
@@ -227,7 +227,7 @@ function SignUp() {
               Confirm Password
             </label>
             <input
-              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="passwordConfirmation"
               type="password"
               placeholder="Confirm your password"
@@ -252,7 +252,7 @@ function SignUp() {
           <div className="mt-5 flex w-full">
             <button
               onClick={() => navigate("/")}
-              className="py h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+              className="py h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
               type="button"
             >
               Cancel
