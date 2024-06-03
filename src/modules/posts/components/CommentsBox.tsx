@@ -2,8 +2,8 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import he from "he";
 import axios, { AxiosError } from "axios";
-import { commentType } from "../components/Post";
-import { onePostType } from "./posts/types";
+import { commentType } from "../../../pages/Post";
+import { onePostType } from "../types";
 import TextareaAutosize from "react-textarea-autosize";
 
 function CommentsBox({

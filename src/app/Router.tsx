@@ -1,20 +1,20 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import Posts from "../components/Posts";
-import NotFound from "../features/NotFound";
-import Post from "../components/Post";
-import ServerError from "../features/ServerError";
-import LogIn from "../features/log-in";
-import SignUp from "../features/sign-up";
+import Hero from "../pages/Hero";
+import Posts from "../pages/Posts";
+import NotFound from "../pages/NotFound";
+import Post from "../pages/Post";
+import ServerError from "../pages/ServerError";
+import LogIn from "../pages/log-in";
+import SignUp from "../pages/sign-up";
 
 // POSTS
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { postsList } from "../features/posts/postsSlice";
-import { switchPrivilege } from "../features/posts/privilegeSlice";
+import { postsList } from "../modules/posts/utils/postsSlice";
+import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
-import { postTypes } from "../features/posts/types";
+import { postTypes } from "../modules/posts/types";
 import axios, { AxiosError } from "axios";
 import { useEffect } from "react";
 
