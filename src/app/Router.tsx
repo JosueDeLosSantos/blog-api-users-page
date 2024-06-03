@@ -1,10 +1,12 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "../components/Home";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
 import Posts from "../components/Posts";
-import User from "../components/user";
 import NotFound from "../features/NotFound";
 import Post from "../components/Post";
 import ServerError from "../features/ServerError";
+import LogIn from "../features/log-in";
+import SignUp from "../features/sign-up";
 
 // POSTS
 import { useDispatch, useSelector } from "react-redux";
@@ -69,24 +71,34 @@ const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <Navbar />,
+      children: [
+        {
+          index: true,
+          element: <Hero />,
+        },
+        {
+          path: "posts",
+          element: <Posts />,
+        },
+        {
+          path: "posts/post/:name",
+          element: <Post />,
+        },
+        {
+          path: "log-in",
+          element: <LogIn />,
+        },
+        {
+          path: "sign-up",
+          element: <SignUp />,
+        },
+        {
+          path: "server-error",
+          element: <ServerError />,
+        },
+      ],
       errorElement: <NotFound />,
-    },
-    {
-      path: "posts",
-      element: <Posts />,
-    },
-    {
-      path: "server-error",
-      element: <ServerError />,
-    },
-    {
-      path: ":name",
-      element: <User />,
-    },
-    {
-      path: "posts/post/:name",
-      element: <Post />,
     },
   ]);
   return <RouterProvider router={router} />;

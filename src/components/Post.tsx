@@ -63,9 +63,6 @@ function Post() {
     __v: 0,
   });
 
-  // position the scroll at the top of the page
-  // window.scrollTo(0, 0);
-
   // keep comments array updated to avoid unnecessary API calls
   function addComment(arg: commentType) {
     // Change array's order to show the most recent one on the top
@@ -103,6 +100,9 @@ function Post() {
   // MARK: fetchPost
   const [user, setUser] = useState<userType>({} as userType);
   useEffect(() => {
+    // position the scroll at the top of the page
+    window.scrollTo(0, 0);
+
     (async function fetchPost() {
       const url = window.location.href;
       const urlId = url.split("/")[5];
@@ -212,9 +212,6 @@ function Post() {
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      {windowWidth < 769 && <MenuBar />}
-      {windowWidth > 768 && <MenuBarLarge />}
-
       <main className="flex gap-4 pb-5 pl-5 pr-5 pt-24">
         {member === "admin" && (
           <ThemeProvider theme={theme}>
@@ -355,7 +352,7 @@ function Post() {
             {post?.comments.map((comment) => (
               <div
                 key={comment._id}
-                className="mx-auto mb-8 box-border w-11/12 rounded-lg border border-solid border-slate-300 p-5 dark:border-slate-600"
+                className="mx-auto mb-8 box-border max-h-[1600px] w-11/12 truncate rounded-lg border border-solid border-slate-300 p-5 dark:border-slate-600"
               >
                 <div className="relative mb-5 flex h-5 items-end gap-2 max-[370px]:flex-col max-[370px]:items-start max-[370px]:gap-0">
                   <div className="font-bold text-slate-500 max-sm:text-xs sm:text-sm dark:text-slate-300">
@@ -387,6 +384,10 @@ function Post() {
                         }}
                       >
                         <MenuItem
+                          sx={{
+                            fontSize: "1rem",
+                            borderBottom: "1px solid #e0e0e0",
+                          }}
                           onClick={(e: React.MouseEvent) => {
                             handleClose(e);
                           }}

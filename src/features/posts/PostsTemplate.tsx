@@ -84,6 +84,11 @@ function PostsTemplate({
   };
 
   useEffect(() => {
+    // position the scroll at the top of the page
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     /* This function triggers when the user reaches the bottom
 		of the page. */
     const handleScroll = () => {
@@ -109,15 +114,10 @@ function PostsTemplate({
     };
   }, [postsCopy, posts]);
 
-  const { windowWidth } = useWindowSize();
-
   // MARK: return
 
   return (
     <div className="max-h-auto min-h-screen bg-slate-100 dark:bg-slate-950">
-      {windowWidth <= 768 && <MenuBar />}
-      {windowWidth >= 769 && <MenuBarLarge />}
-
       <div className="mx-auto w-fit pt-24">
         <Suspense fallback={<SkeletonPostsPage />}>
           {postsCopy &&
