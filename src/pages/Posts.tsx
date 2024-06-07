@@ -35,10 +35,7 @@ function Index() {
           });
 
           dispatch(switchPrivilege("admin"));
-
-          if (response.data.posts) {
-            dispatch(postsList(response.data.posts));
-          }
+          dispatch(postsList(response.data.posts));
           setLoadState("success");
         } catch (error) {
           const axiosError = error as AxiosError;

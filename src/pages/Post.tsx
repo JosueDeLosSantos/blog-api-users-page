@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import MenuBar from "../components/MenuBar";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CommentsBox from "../modules/posts/components/CommentsBox";
@@ -18,7 +17,6 @@ import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import useWindowSize from "../hooks/windowSize";
-import MenuBarLarge from "../components/MenuBarLarge";
 
 const theme = createTheme({
   palette: {

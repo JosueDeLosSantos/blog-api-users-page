@@ -8,7 +8,6 @@ import ServerError from "../pages/ServerError";
 import LogIn from "../pages/log-in";
 import SignUp from "../pages/sign-up";
 import Profile from "../pages/Profile";
-``;
 
 // POSTS
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +29,6 @@ const Router = () => {
   const server = "http://localhost:3000/";
 
   useEffect(() => {
-    // make an API call only if the state array is empty
     if (!posts.length) {
       (async function fetchPosts() {
         // get security token
@@ -45,10 +43,7 @@ const Router = () => {
           });
 
           dispatch(switchPrivilege("admin"));
-
-          if (response.data.posts) {
-            dispatch(postsList(response.data.posts));
-          }
+          dispatch(postsList(response.data.posts));
         } catch (error) {
           const axiosError = error as AxiosError;
 
