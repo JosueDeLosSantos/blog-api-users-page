@@ -59,6 +59,10 @@ const Router = () => {
             if (userData.posts) {
               dispatch(postsList(userData.posts));
             }
+          } else {
+            // logout
+            dispatch(switchPrivilege("user"));
+            localStorage.removeItem("accessToken");
           }
         }
       })();

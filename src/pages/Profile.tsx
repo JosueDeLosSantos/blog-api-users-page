@@ -33,6 +33,16 @@ export default function Profile() {
     newPasswordConfirmation: "",
   });
 
+  const [errors, setErrors] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    username: "",
+    password: "",
+    newPassword: "",
+    newPasswordConfirmation: "",
+  });
+
   function onSelect(event: ChangeEvent<HTMLSelectElement>) {
     const selectedOption = (event.target as HTMLSelectElement).value;
     if (selectedOption === "Yes") {
@@ -41,6 +51,12 @@ export default function Profile() {
       setSelected(true);
       setFormvalues({
         ...formValues,
+        password: "",
+        newPassword: "",
+        newPasswordConfirmation: "",
+      });
+      setErrors({
+        ...errors,
         password: "",
         newPassword: "",
         newPasswordConfirmation: "",
@@ -92,6 +108,38 @@ export default function Profile() {
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    /* this is required to keep errors updated */
+    setErrors({
+      first_name: "",
+      last_name: "",
+      email: "",
+      username: "",
+      password: "",
+      newPassword: "",
+      newPasswordConfirmation: "",
+    });
+
+    if (!selected) {
+      // password changed
+      if (!formValues.password.length) {
+        setErrors({
+          ...errors,
+          password: "Current password has not been entered",
+          newPassword: "",
+          newPasswordConfirmation: "",
+        });
+        return;
+      }
+      if (formValues.password.length && !formValues.newPassword.length) {
+        setErrors({
+          ...errors,
+          password: "",
+          newPassword: "new password has not been entered",
+          newPasswordConfirmation: "",
+        });
+        return;
+      }
+    }
 
     // http://localhost:3000/user/profile
     //https://dummy-blog.adaptable.app/user/profile
@@ -106,21 +154,58 @@ export default function Profile() {
       const response = await axios.put(apiUrl, formValues, {
         headers: headers,
       });
-      console.log(response);
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      if (
-        axiosError?.response?.status === 403 ||
-        axiosError?.response?.status === 401
-      ) {
-        // if it's forbidden or unauthorized it will be logged out
-        //dispatch(switchPrivilege("user")); // logout
-        //navigate("/log-in");
-        console.log(axiosError);
+
+      if (response.data.errors) {
+        /* fix form's error management */
+        const newErrors = {
+          first_name: "",
+          last_name: "",
+          email: "",
+          username: "",
+          password: "",
+          newPassword: "",
+          newPasswordConfirmation: "",
+        };
+        while (response.data.errors.length > 0) {
+          const error = response.data.errors.shift();
+          switch (error.path) {
+            case "first_name":
+              newErrors.first_name = error.msg;
+              break;
+            case "last_name":
+              newErrors.last_name = error.msg;
+              break;
+            case "email":
+              newErrors.email = error.msg;
+              break;
+            case "username":
+              newErrors.username = error.msg;
+              break;
+            case "password":
+              newErrors.password = error.msg;
+              break;
+            case "newPassword":
+              newErrors.newPassword = error.msg;
+              break;
+            case "newPasswordConfirmation":
+              newErrors.newPasswordConfirmation = error.msg;
+              break;
+            default:
+              break;
+          }
+        }
+        setErrors(newErrors);
       } else {
-        //navigate("/server-error");
-        console.log(axiosError);
+        // logout
+        dispatch(switchPrivilege("user"));
+        localStorage.removeItem("accessToken");
+        navigate("/log-in");
       }
+    } catch (error) {
+      // logout
+      dispatch(switchPrivilege("user"));
+      localStorage.removeItem("accessToken");
+      navigate("/server-error");
     }
   }
 
@@ -168,6 +253,9 @@ export default function Profile() {
                 maxLength={40}
                 value={formValues.first_name}
               />
+              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                {errors.first_name}
+              </span>
             </div>
             <div className="flex-1">
               <label htmlFor="last_name">Last Name</label>
@@ -180,6 +268,9 @@ export default function Profile() {
                 maxLength={70}
                 value={formValues.last_name}
               />
+              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                {errors.last_name}
+              </span>
             </div>
           </div>
           <div className="flex flex-col gap-5 md:flex-row">
@@ -194,6 +285,9 @@ export default function Profile() {
                 maxLength={120}
                 value={formValues.email}
               />
+              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                {errors.email}
+              </span>
             </div>
             <div className="flex-1">
               <label htmlFor="username">Username</label>
@@ -206,6 +300,9 @@ export default function Profile() {
                 maxLength={80}
                 value={formValues.username}
               />
+              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                {errors.username}
+              </span>
             </div>
           </div>
           <div className="flex flex-col gap-5 md:flex-row">
@@ -232,6 +329,9 @@ export default function Profile() {
                 onChange={handleInputChange}
                 disabled={selected}
               />
+              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                {errors.password}
+              </span>
             </div>
           </div>
           <div className="flex flex-col gap-5 md:flex-row">
@@ -247,6 +347,9 @@ export default function Profile() {
                 disabled={selected}
                 value={formValues.newPassword}
               />
+              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                {errors.newPassword}
+              </span>
             </div>
             <div className="flex-1">
               <label htmlFor="newPasswordConfirmation">
@@ -262,6 +365,9 @@ export default function Profile() {
                 disabled={selected}
                 value={formValues.newPasswordConfirmation}
               />
+              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                {errors.newPasswordConfirmation}
+              </span>
             </div>
           </div>
 

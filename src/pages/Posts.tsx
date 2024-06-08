@@ -8,12 +8,13 @@ import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import { postTypes } from "../modules/posts/types";
 import SkeletonPostsPage from "./SkeletonPostsPage";
-import ServerError from "./ServerError";
+import { useNavigate } from "react-router-dom";
 
 function Index() {
   const dispatch: AppDispatch = useDispatch();
   const posts = useSelector((state: RootState) => state.posts);
   const [loadState, setLoadState] = useState("loading");
+  const navigate = useNavigate();
 
   // http://localhost:3000/
   // https://dummy-blog.adaptable.app/
@@ -54,14 +55,17 @@ function Index() {
             }
             setLoadState("success");
           } else {
-            setLoadState("error");
+            // logout
+            dispatch(switchPrivilege("user"));
+            localStorage.removeItem("accessToken");
+            navigate("/server-error");
           }
         }
       })();
     } else {
       setLoadState("success");
     }
-  }, [posts, dispatch]);
+  }, [posts, dispatch, navigate]);
 
   return (
     (loadState === "loading" && (
@@ -72,11 +76,6 @@ function Index() {
     (loadState === "success" && (
       <>
         <PostsTemplate server={server} posts={posts} />
-      </>
-    )) ||
-    (loadState === "error" && (
-      <>
-        <ServerError />
       </>
     ))
   );
