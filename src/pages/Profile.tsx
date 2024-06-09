@@ -4,24 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../app/store";
 import { useDispatch } from "react-redux";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
-
-type userType = {
-  _id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  username: string;
-  password: string;
-  __v: number;
-  iat: number;
-  exp: number;
-};
+import ImageUploader from "../components/ImageUploader";
 
 export default function Profile() {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selected, setSelected] = useState(true);
-  const [user, setUser] = useState({} as userType);
 
   const [formValues, setFormvalues] = useState({
     first_name: "",
@@ -82,7 +70,6 @@ export default function Profile() {
           ...response.data.user,
           password: "",
         });
-        setUser(response.data.user);
       } catch (error) {
         const axiosError = error as AxiosError;
         if (
@@ -218,7 +205,7 @@ export default function Profile() {
             className="rounded-full max-md:size-[80px]"
             width={100}
             height={100}
-            src="https://avatars.githubusercontent.com/u/10110568?v=4"
+            src="/images/profile-pic-placeholder.webp"
           />
         </div>
         <div className="flex flex-col-reverse md:flex-col">
@@ -228,9 +215,7 @@ export default function Profile() {
           <p className="max-md:text-center max-md:text-sm">Profile-pic.jpg</p>
         </div>
         <div className="md:ml-auto">
-          <button className="w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
-            Upload
-          </button>
+          <ImageUploader message="Upload" />
         </div>
       </div>
       {/* MARK: Profile-info */}
