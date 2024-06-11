@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 // import { formDataType } from "../pages/CreateUpdatePost";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import ReactCrop, {
@@ -10,7 +10,6 @@ import ReactCrop, {
 import { canvasPreview } from "../utils/canvasPreview";
 import { useDebounceEffect } from "../utils/useDebounceEffect";
 import "react-image-crop/dist/ReactCrop.css";
-import clsx from "clsx";
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -34,18 +33,24 @@ function centerAspectCrop(
   );
 }
 
+type profilePicType = {
+  src: string;
+  file: File | undefined;
+  trash: string | undefined;
+};
+
 type AppProps = {
   message?: string;
-  operation?: string;
-  url?: string;
+  onProfilePicChange: (src?: string, file?: File) => void;
+  profilePic: profilePicType;
   // formData: formDataType;
   // setFormData: (formData: formDataType) => void;
 };
 
 const App: React.FC<AppProps> = ({
-  message = "Click or Drop here",
-  operation = "create",
-  url = "",
+  message = "Upload",
+  onProfilePicChange,
+  profilePic,
   // formData,
   // setFormData,
 }) => {
@@ -57,10 +62,16 @@ const App: React.FC<AppProps> = ({
   const [fileName, setFileName] = useState("");
   const [images, setImages] = useState<ImageListType>([]);
   const [imageContainer, setImageContainer] = useState("block");
-  const [cropSectionVisibility, setCropSectionVisibility] = useState("block");
+  const [cropSectionVisibility, setCropSectionVisibility] = useState("none");
   const [selectedCropSection, setSelectedCropSection] = useState("none");
-  const [selectedCroppedImageSrc, setSelectedCroppedImageSrc] = useState("");
-  const aspect = 16 / 9;
+  const aspect = 1 / 1;
+
+  useEffect(() => {
+    if (profilePic.trash) {
+      setImageContainer("none"); // disable Upload button
+      setSelectedCropSection("block"); // enable Remove button
+    }
+  }, [profilePic.trash]);
 
   const onChange = (imageList: ImageListType) => {
     setImages(imageList);
@@ -121,21 +132,21 @@ const App: React.FC<AppProps> = ({
       type: "image/png",
     });
 
-    const file = new File([blob], `${fileName} cropped`, {
+    const file = new File([blob], `${fileName} profile-pic`, {
       type: "image/jpeg",
     });
 
     setCropSectionVisibility("none");
     // setFormData({ ...formData, file: file });
     const croppedImgUrl = URL.createObjectURL(file);
-    setSelectedCroppedImageSrc(croppedImgUrl);
+    onProfilePicChange(croppedImgUrl, file);
     setSelectedCropSection("block");
-    console.log(file);
   }
 
   function onRemoveCrop() {
     setImageContainer("block");
     setSelectedCropSection("none");
+    setCropSectionVisibility("none");
   }
 
   useDebounceEffect(
@@ -162,10 +173,8 @@ const App: React.FC<AppProps> = ({
           <div>
             <BlogImgUploadBtn
               imageContainer={imageContainer}
-              operation={operation}
               isDragging={isDragging}
               message={message}
-              url={url}
               dragProps={{ ...dragProps }}
               onImageUpload={onImageUpload}
             />
@@ -177,6 +186,7 @@ const App: React.FC<AppProps> = ({
               previewCanvasRef={previewCanvasRef}
               completedCrop={completedCrop}
               crop={crop}
+              onRemoveCrop={onRemoveCrop}
               setCrop={setCrop}
               setCompletedCrop={setCompletedCrop}
               onCropSelected={onCropSelected}
@@ -184,8 +194,8 @@ const App: React.FC<AppProps> = ({
             />
             <BlogImgRemovalBtn
               selectedCropSection={selectedCropSection}
-              selectedCroppedImageSrc={selectedCroppedImageSrc}
               onRemoveCrop={onRemoveCrop}
+              onProfilePicChange={onProfilePicChange}
             />
           </div>
         )}
@@ -198,10 +208,8 @@ export default App;
 
 interface ImgUploadBtnProps {
   imageContainer: string;
-  operation: string;
   isDragging: boolean;
   message: string;
-  url: string;
   dragProps: {
     onDrop: (e: React.DragEvent<HTMLElement>) => void;
     onDragEnter: (e: React.DragEvent<HTMLElement>) => void;
@@ -214,51 +222,28 @@ interface ImgUploadBtnProps {
 
 const BlogImgUploadBtn: React.FC<ImgUploadBtnProps> = ({
   imageContainer,
-  operation,
   isDragging,
   message,
-  url,
   dragProps,
   onImageUpload,
 }) => {
   return (
     <div className="mx-auto w-full text-start md:mb-0 xl:text-xl">
-      {operation === "create" ? (
-        <button
-          style={{ display: `${imageContainer}` }}
-          className={
-            isDragging
-              ? "w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-blue-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
-              : "w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
-          }
-          onClick={(e) => {
-            e.preventDefault();
-            onImageUpload();
-          }}
-          {...dragProps}
-        >
-          {message}
-        </button>
-      ) : (
-        <div style={{ display: `${imageContainer}` }}>
-          <div className="relative bottom-0 left-0 h-[24rem] w-full max-sm:h-[12rem]">
-            <img
-              className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
-              src={url}
-              alt=""
-            />
-          </div>
-          <button
-            className="mt-2 rounded bg-blue-500 px-[1em] py-[0.5em] font-bold text-white hover:bg-blue-700 max-sm:text-sm"
-            onClick={(e) => {
-              e.preventDefault();
-              onImageUpload();
-            }}
-          >
-            Update
-          </button>
-        </div>
-      )}
+      <button
+        style={{ display: `${imageContainer}` }}
+        className={
+          isDragging
+            ? "w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-blue-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+            : "w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+        }
+        onClick={(e) => {
+          e.preventDefault();
+          onImageUpload();
+        }}
+        {...dragProps}
+      >
+        {message}
+      </button>
     </div>
   );
 };
@@ -271,6 +256,7 @@ interface ImgCropPros {
   previewCanvasRef: React.RefObject<HTMLCanvasElement>;
   completedCrop: PixelCrop | undefined;
   crop: Crop | undefined;
+  onRemoveCrop: () => void;
   setCrop: React.Dispatch<React.SetStateAction<Crop | undefined>>;
   setCompletedCrop: React.Dispatch<React.SetStateAction<PixelCrop | undefined>>;
   onCropSelected: () => void;
@@ -285,6 +271,7 @@ const ImgCrop: React.FC<ImgCropPros> = ({
   previewCanvasRef,
   completedCrop,
   crop,
+  onRemoveCrop,
   setCrop,
   setCompletedCrop,
   onCropSelected,
@@ -292,29 +279,29 @@ const ImgCrop: React.FC<ImgCropPros> = ({
 }) => {
   return (
     <div
-      // style={{ display: `${cropSectionVisibility}` }}
-      className="absolute left-0 top-0 h-[120vh] w-full bg-[rgba(0,0,0,0.7)]"
+      style={{ display: `${cropSectionVisibility}` }}
+      className="absolute left-0 top-0 h-[150vh] w-full bg-[rgba(0,0,0,0.7)]"
     >
       <div
         style={{
           display: `${cropSectionVisibility}`,
         }}
-        className="w-1/2 bg-white p-5"
+        className="absolute left-[50%] top-[50%] w-3/4 translate-x-[-50%] translate-y-[-120%] bg-white p-5 sm:w-fit"
       >
         <div
           style={{ display: `${cropSectionVisibility}` }}
           className="relative bottom-0 left-0 w-full"
         >
-          <div>
+          <div className="flex justify-center">
             {!!imgSrc && (
               <ReactCrop
                 crop={crop}
                 onChange={(_, percentCrop) => setCrop(percentCrop)}
                 onComplete={(c) => setCompletedCrop(c)}
                 aspect={aspect}
-                // minWidth={400}
-                minHeight={100}
-                // circularCrop
+                minWidth={50}
+                minHeight={50}
+                circularCrop
               >
                 <img
                   className="rounded-lg object-cover"
@@ -343,15 +330,26 @@ const ImgCrop: React.FC<ImgCropPros> = ({
                   }}
                 />
               </div>
-              <button
-                className="mt-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onCropSelected();
-                }}
-              >
-                Crop
-              </button>
+              <div className="flex justify-center gap-2">
+                <button
+                  className="mt-2 gap-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onCropSelected();
+                  }}
+                >
+                  Crop
+                </button>
+                <button
+                  className="mt-2 rounded border border-slate-400 bg-white px-[0.8em] py-[0.5em] font-bold text-slate-500 hover:bg-slate-100 max-sm:text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onRemoveCrop();
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -362,31 +360,24 @@ const ImgCrop: React.FC<ImgCropPros> = ({
 
 interface ImgRemovalBtnProps {
   selectedCropSection: string;
-  selectedCroppedImageSrc: string;
   onRemoveCrop: () => void;
+  onProfilePicChange: (src?: string) => void;
 }
 
 const BlogImgRemovalBtn: React.FC<ImgRemovalBtnProps> = ({
   selectedCropSection,
-  selectedCroppedImageSrc,
   onRemoveCrop,
+  onProfilePicChange,
 }) => {
   return (
     <div style={{ display: `${selectedCropSection}` }}>
-      <div className="relative bottom-0 left-0 h-[24rem] w-full max-sm:h-[12rem]">
-        <img
-          className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
-          src={selectedCroppedImageSrc}
-          alt=""
-        />
-      </div>
-
       <button
         onClick={(e) => {
           e.preventDefault();
           onRemoveCrop();
+          onProfilePicChange();
         }}
-        className="mt-2 rounded bg-red-500 px-[1em] py-[0.5em] font-bold text-white hover:bg-red-700 max-sm:text-sm"
+        className="w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
       >
         Remove
       </button>

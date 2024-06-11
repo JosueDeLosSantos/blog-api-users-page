@@ -10,6 +10,21 @@ export default function Profile() {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selected, setSelected] = useState(true);
+  const initialProfilePic = {
+    src: "/images/profile-pic-placeholder.webp",
+    file: undefined as File | undefined,
+    trash: undefined as undefined | string,
+  };
+  const [profilePic, setProfilePic] = useState(initialProfilePic);
+
+  function onProfilePicChange(src?: string, file?: File) {
+    if (src === undefined) {
+      photoDeletion(profilePic.trash as string);
+    } else {
+      const newProfile = { ...profilePic, src: src, file: file };
+      photoUpload(newProfile);
+    }
+  }
 
   const [formValues, setFormvalues] = useState({
     first_name: "",
@@ -30,6 +45,70 @@ export default function Profile() {
     newPassword: "",
     newPasswordConfirmation: "",
   });
+
+  async function photoUpload(newProfile: typeof initialProfilePic) {
+    const jwtToken = localStorage.getItem("accessToken");
+    const headers: Record<string, string> = {};
+    if (jwtToken) {
+      headers["Authorization"] = `Bearer ${jwtToken}`;
+    }
+    const url = "http://localhost:3000/user/profile/photo";
+    try {
+      const response = await axios.putForm(url, newProfile, {
+        headers: headers,
+      });
+
+      setProfilePic({
+        file: response.data.photo,
+        src: `http://localhost:3000/${response.data.photo.path}`,
+        trash: response.data.photo.filename,
+      });
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (
+        axiosError?.response?.status === 403 ||
+        axiosError?.response?.status === 401
+      ) {
+        // if it's forbidden or unauthorized it will be logged out
+        dispatch(switchPrivilege("user")); // logout
+        navigate("/log-in");
+      } else {
+        navigate("/server-error");
+      }
+    }
+  }
+
+  async function photoDeletion(toDelete: string) {
+    const jwtToken = localStorage.getItem("accessToken");
+    const headers: Record<string, string> = {};
+    if (jwtToken) {
+      headers["Authorization"] = `Bearer ${jwtToken}`;
+    }
+    const url = "http://localhost:3000/user/profile/photo";
+    try {
+      await axios.putForm(
+        url,
+        { trash: toDelete },
+        {
+          headers: headers,
+        },
+      );
+
+      setProfilePic(initialProfilePic);
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (
+        axiosError?.response?.status === 403 ||
+        axiosError?.response?.status === 401
+      ) {
+        // if it's forbidden or unauthorized it will be logged out
+        dispatch(switchPrivilege("user")); // logout
+        navigate("/log-in");
+      } else {
+        navigate("/server-error");
+      }
+    }
+  }
 
   function onSelect(event: ChangeEvent<HTMLSelectElement>) {
     const selectedOption = (event.target as HTMLSelectElement).value;
@@ -64,6 +143,14 @@ export default function Profile() {
         const response = await axios.get(url, {
           headers: headers,
         });
+
+        if (response.data.user.photo) {
+          setProfilePic({
+            ...profilePic,
+            src: `http://localhost:3000/${response.data.user.photo.path}`,
+            trash: response.data.user.photo.filename,
+          });
+        }
 
         setFormvalues({
           ...formValues,
@@ -205,17 +292,20 @@ export default function Profile() {
             className="rounded-full max-md:size-[80px]"
             width={100}
             height={100}
-            src="/images/profile-pic-placeholder.webp"
+            src={profilePic.src}
           />
         </div>
         <div className="flex flex-col-reverse md:flex-col">
           <h3 className="text-2xl antialiased max-md:text-center max-md:text-xl">
             Add a profile picture
           </h3>
-          <p className="max-md:text-center max-md:text-sm">Profile-pic.jpg</p>
+          {/* <p className="max-md:text-center max-md:text-sm">Profile-pic.jpg</p> */}
         </div>
         <div className="md:ml-auto">
-          <ImageUploader message="Upload" />
+          <ImageUploader
+            profilePic={profilePic}
+            onProfilePicChange={onProfilePicChange}
+          />
         </div>
       </div>
       {/* MARK: Profile-info */}
