@@ -43,16 +43,12 @@ type AppProps = {
   message?: string;
   onProfilePicChange: (src?: string, file?: File) => void;
   profilePic: profilePicType;
-  // formData: formDataType;
-  // setFormData: (formData: formDataType) => void;
 };
 
 const App: React.FC<AppProps> = ({
   message = "Upload",
   onProfilePicChange,
   profilePic,
-  // formData,
-  // setFormData,
 }) => {
   const [imgSrc, setImgSrc] = useState("");
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -64,6 +60,7 @@ const App: React.FC<AppProps> = ({
   const [imageContainer, setImageContainer] = useState("block");
   const [cropSectionVisibility, setCropSectionVisibility] = useState("none");
   const [selectedCropSection, setSelectedCropSection] = useState("none");
+  const [cropBtnsVisibility, setCropBtnsVisibility] = useState("block");
   const aspect = 1 / 1;
 
   useEffect(() => {
@@ -90,6 +87,10 @@ const App: React.FC<AppProps> = ({
     const { width, height } = e.currentTarget;
     setCrop(centerAspectCrop(width, height, aspect));
     setImageContainer("none"); // hides fake image container
+  }
+
+  function onCrop(param: string) {
+    setCropBtnsVisibility(`${param}`);
   }
 
   // MARK: onDownloadCropClick
@@ -137,7 +138,6 @@ const App: React.FC<AppProps> = ({
     });
 
     setCropSectionVisibility("none");
-    // setFormData({ ...formData, file: file });
     const croppedImgUrl = URL.createObjectURL(file);
     onProfilePicChange(croppedImgUrl, file);
     setSelectedCropSection("block");
@@ -186,6 +186,8 @@ const App: React.FC<AppProps> = ({
               previewCanvasRef={previewCanvasRef}
               completedCrop={completedCrop}
               crop={crop}
+              cropBtnsVisibility={cropBtnsVisibility}
+              onCrop={onCrop}
               onRemoveCrop={onRemoveCrop}
               setCrop={setCrop}
               setCompletedCrop={setCompletedCrop}
@@ -194,6 +196,7 @@ const App: React.FC<AppProps> = ({
             />
             <BlogImgRemovalBtn
               selectedCropSection={selectedCropSection}
+              onCrop={onCrop}
               onRemoveCrop={onRemoveCrop}
               onProfilePicChange={onProfilePicChange}
             />
@@ -256,6 +259,8 @@ interface ImgCropPros {
   previewCanvasRef: React.RefObject<HTMLCanvasElement>;
   completedCrop: PixelCrop | undefined;
   crop: Crop | undefined;
+  cropBtnsVisibility: string;
+  onCrop: (param: string) => void;
   onRemoveCrop: () => void;
   setCrop: React.Dispatch<React.SetStateAction<Crop | undefined>>;
   setCompletedCrop: React.Dispatch<React.SetStateAction<PixelCrop | undefined>>;
@@ -271,6 +276,8 @@ const ImgCrop: React.FC<ImgCropPros> = ({
   previewCanvasRef,
   completedCrop,
   crop,
+  cropBtnsVisibility,
+  onCrop,
   onRemoveCrop,
   setCrop,
   setCompletedCrop,
@@ -332,15 +339,18 @@ const ImgCrop: React.FC<ImgCropPros> = ({
               </div>
               <div className="flex justify-center gap-2">
                 <button
+                  style={{ display: `${cropBtnsVisibility}` }}
                   className="mt-2 gap-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
                   onClick={(e) => {
                     e.preventDefault();
                     onCropSelected();
+                    onCrop("none");
                   }}
                 >
                   Crop
                 </button>
                 <button
+                  style={{ display: `${cropBtnsVisibility}` }}
                   className="mt-2 rounded border border-slate-400 bg-white px-[0.8em] py-[0.5em] font-bold text-slate-500 hover:bg-slate-100 max-sm:text-sm"
                   onClick={(e) => {
                     e.preventDefault();
@@ -360,12 +370,14 @@ const ImgCrop: React.FC<ImgCropPros> = ({
 
 interface ImgRemovalBtnProps {
   selectedCropSection: string;
+  onCrop: (param: string) => void;
   onRemoveCrop: () => void;
   onProfilePicChange: (src?: string) => void;
 }
 
 const BlogImgRemovalBtn: React.FC<ImgRemovalBtnProps> = ({
   selectedCropSection,
+  onCrop,
   onRemoveCrop,
   onProfilePicChange,
 }) => {
@@ -376,6 +388,7 @@ const BlogImgRemovalBtn: React.FC<ImgRemovalBtnProps> = ({
           e.preventDefault();
           onRemoveCrop();
           onProfilePicChange();
+          onCrop("block");
         }}
         className="w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
       >
