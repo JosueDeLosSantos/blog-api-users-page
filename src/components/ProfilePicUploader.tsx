@@ -10,6 +10,7 @@ import ReactCrop, {
 import { canvasPreview } from "../utils/canvasPreview";
 import { useDebounceEffect } from "../utils/useDebounceEffect";
 import "react-image-crop/dist/ReactCrop.css";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -169,7 +170,7 @@ const App: React.FC<AppProps> = ({
   return (
     <div>
       <ImageUploading value={images} onChange={onChange} dataURLKey="data_url">
-        {({ imageList, onImageUpload, isDragging, dragProps }) => (
+        {({ onImageUpload, isDragging, dragProps }) => (
           <div>
             <BlogImgUploadBtn
               imageContainer={imageContainer}
@@ -340,7 +341,7 @@ const ImgCrop: React.FC<ImgCropPros> = ({
               <div className="flex justify-center gap-2">
                 <button
                   style={{ display: `${cropBtnsVisibility}` }}
-                  className="mt-2 gap-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
+                  className="mt-2 gap-2 rounded bg-purple-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-purple-700 max-sm:text-sm"
                   onClick={(e) => {
                     e.preventDefault();
                     onCropSelected();
@@ -359,6 +360,15 @@ const ImgCrop: React.FC<ImgCropPros> = ({
                 >
                   Cancel
                 </button>
+                {cropBtnsVisibility === "none" &&
+                  cropSectionVisibility === "block" && (
+                    <div className="mt-2 gap-2 rounded bg-purple-600 px-[1em] py-[0.5em] font-medium text-white hover:bg-purple-700 max-sm:text-sm">
+                      <AutorenewIcon
+                        className="animate-spin" /* sx={{ fontSize: 80  }} */
+                      />{" "}
+                      Cropping
+                    </div>
+                  )}
               </div>
             </div>
           )}

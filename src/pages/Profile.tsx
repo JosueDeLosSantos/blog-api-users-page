@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../app/store";
 import { useDispatch } from "react-redux";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
-import ImageUploader from "../components/ImageUploader";
+import ProfilePicUploader from "../components/ProfilePicUploader";
 
 export default function Profile() {
   const dispatch: AppDispatch = useDispatch();
@@ -296,13 +296,21 @@ export default function Profile() {
           />
         </div>
         <div className="flex flex-col-reverse md:flex-col">
-          <h3 className="text-2xl antialiased max-md:text-center max-md:text-xl">
-            Add a profile picture
-          </h3>
+          {profilePic.src === "/images/profile-pic-placeholder.webp" && (
+            <h3 className="text-2xl antialiased max-md:text-center max-md:text-xl">
+              Add a profile picture
+            </h3>
+          )}
+          {profilePic.src !== "/images/profile-pic-placeholder.webp" && (
+            <h3 className="text-2xl antialiased max-md:text-center max-md:text-xl">
+              Update profile picture
+            </h3>
+          )}
+
           {/* <p className="max-md:text-center max-md:text-sm">Profile-pic.jpg</p> */}
         </div>
         <div className="md:ml-auto">
-          <ImageUploader
+          <ProfilePicUploader
             profilePic={profilePic}
             onProfilePicChange={onProfilePicChange}
           />
