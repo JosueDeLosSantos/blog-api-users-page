@@ -22,49 +22,45 @@ function Index() {
   // request all posts
   useEffect(() => {
     // make an API call only if the state array is empty
-    if (!posts.length) {
-      (async function fetchPosts() {
-        // get security token
-        const jwtToken = localStorage.getItem("accessToken");
-        const headers: Record<string, string> = {};
-        if (jwtToken) {
-          headers["Authorization"] = `Bearer ${jwtToken}`;
-        }
-        try {
-          const response = await axios.get(server, {
-            headers: headers,
-          });
+    (async function fetchPosts() {
+      // get security token
+      const jwtToken = localStorage.getItem("accessToken");
+      const headers: Record<string, string> = {};
+      if (jwtToken) {
+        headers["Authorization"] = `Bearer ${jwtToken}`;
+      }
+      try {
+        const response = await axios.get(server, {
+          headers: headers,
+        });
 
-          dispatch(switchPrivilege("admin"));
-          dispatch(postsList(response.data.posts));
-          setLoadState("success");
-        } catch (error) {
-          const axiosError = error as AxiosError;
+        dispatch(switchPrivilege("admin"));
+        dispatch(postsList(response.data.posts));
+        setLoadState("success");
+      } catch (error) {
+        const axiosError = error as AxiosError;
 
-          if (
-            axiosError?.response?.status === 403 ||
-            axiosError?.response?.status === 401
-          ) {
-            type dataType = {
-              posts: postTypes[];
-            };
-            const userData = axiosError?.response?.data as dataType;
+        if (
+          axiosError?.response?.status === 403 ||
+          axiosError?.response?.status === 401
+        ) {
+          type dataType = {
+            posts: postTypes[];
+          };
+          const userData = axiosError?.response?.data as dataType;
 
-            if (userData.posts) {
-              dispatch(postsList(userData.posts));
-            }
-            setLoadState("success");
-          } else {
-            // logout
-            dispatch(switchPrivilege("user"));
-            localStorage.removeItem("accessToken");
-            navigate("/server-error");
+          if (userData.posts) {
+            dispatch(postsList(userData.posts));
           }
+          setLoadState("success");
+        } else {
+          // logout
+          dispatch(switchPrivilege("user"));
+          localStorage.removeItem("accessToken");
+          navigate("/server-error");
         }
-      })();
-    } else {
-      setLoadState("success");
-    }
+      }
+    })();
   }, [posts, dispatch, navigate]);
 
   return (

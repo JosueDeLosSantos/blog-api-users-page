@@ -9,7 +9,7 @@ import LogIn from "../pages/log-in";
 import SignUp from "../pages/sign-up";
 import Profile from "../pages/Profile";
 
-// POSTS
+/* // POSTS
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { postsList } from "../modules/posts/utils/postsSlice";
@@ -17,10 +17,10 @@ import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import { postTypes } from "../modules/posts/types";
 import axios, { AxiosError } from "axios";
-import { useEffect } from "react";
+import { useEffect } from "react"; */
 
 const Router = () => {
-  // MARK: posts preloader
+  /* // MARK: posts preloader
   const dispatch: AppDispatch = useDispatch();
   const posts = useSelector((state: RootState) => state.posts);
 
@@ -67,7 +67,7 @@ const Router = () => {
         }
       })();
     }
-  }, [posts, dispatch]);
+  }, [posts, dispatch]); */
 
   const router = createBrowserRouter([
     {

@@ -29,7 +29,7 @@ export default function MenuBar() {
       case "3": // Sign Up
         navigate("/sign-up");
         break;
-      case "4": // Sign Up
+      case "4": // Profile
         navigate("/profile");
         break;
       case "5": // Logout
