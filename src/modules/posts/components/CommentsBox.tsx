@@ -59,6 +59,7 @@ function CommentsBox({
           email: "",
           date: "",
           post: post_id,
+          photo: formData.photo,
           __v: 0,
         });
         setCommentError("");
@@ -85,6 +86,7 @@ function CommentsBox({
               email: "",
               date: "",
               post: post_id,
+              photo: formData.photo,
               __v: 0,
             });
           } else {
@@ -117,6 +119,7 @@ function CommentsBox({
           formData._id = response.data.post.comments[0]._id;
           formData.name = `${response.data.user.first_name} ${response.data.user.last_name}`;
           formData.email = response.data.user.email;
+          formData.photo = response.data.post.comments[0].photo;
 
           // update comments array
           addComment(formData);
@@ -129,6 +132,7 @@ function CommentsBox({
             email: "",
             date: "",
             post: post_id,
+            photo: formData.photo,
             __v: 0,
           });
           // clear errors

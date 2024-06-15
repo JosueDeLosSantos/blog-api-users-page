@@ -167,6 +167,7 @@ export default function Profile() {
           dispatch(switchPrivilege("user")); // logout
           navigate("/log-in");
         } else {
+          dispatch(switchPrivilege("user"));
           navigate("/server-error");
         }
       }

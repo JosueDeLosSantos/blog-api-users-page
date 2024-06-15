@@ -32,6 +32,14 @@ const theme = createTheme({
   },
 });
 
+type photoType = {
+  filename: string;
+  originalname: string;
+  mimetype: string;
+  path: string;
+  size: number;
+};
+
 export type commentType = {
   _id: string;
   comment: string;
@@ -40,10 +48,11 @@ export type commentType = {
   email: string;
   name: string;
   post: string;
+  photo: photoType | null;
   __v: number;
 };
 
-function Post() {
+function Post({ server }: { server: string }) {
   const dispatch: AppDispatch = useDispatch();
   const member = useSelector((state: RootState) => state.privilege);
   const initialPost = null as unknown as onePostType;
@@ -58,6 +67,7 @@ function Post() {
     email: "",
     date: "",
     post: "",
+    photo: null,
     __v: 0,
   });
 
@@ -206,6 +216,8 @@ function Post() {
 
   const { windowWidth } = useWindowSize();
 
+  console.log(post);
+
   // MARK: return
 
   return (
@@ -350,70 +362,87 @@ function Post() {
             {post?.comments.map((comment) => (
               <div
                 key={comment._id}
-                className="mx-auto mb-8 box-border max-h-[1600px] w-11/12 truncate rounded-lg border border-solid border-slate-300 p-5 dark:border-slate-600"
+                className="mx-auto mb-8 box-border flex max-h-[1600px] w-11/12 gap-4 truncate rounded-lg border border-solid border-slate-300 p-5 max-md:flex-col max-md:gap-2 dark:border-slate-600"
               >
-                <div className="relative mb-5 flex h-5 items-end gap-2 max-[370px]:flex-col max-[370px]:items-start max-[370px]:gap-0">
-                  <div className="font-bold text-slate-500 max-sm:text-xs sm:text-sm dark:text-slate-300">
-                    {comment.name}
-                  </div>
-                  <div className="text-slate-400 max-sm:text-2xl max-[370px]:hidden sm:text-4xl dark:text-slate-200 ">
-                    <div>.</div>
-                  </div>
-                  <div className="text-slate-500 max-sm:text-[0.70rem] max-sm:leading-[1.390] sm:text-[0.80rem] sm:leading-snug dark:text-slate-300">
-                    {comment.date}
-                  </div>
-                  {member === "admin" && user._id === comment.author && (
-                    <div>
-                      <IconButton
-                        id={comment._id}
-                        className="icons absolute right-[-15px] top-[-15px]"
-                        onClick={handleClick}
-                      >
-                        <MoreHorizIcon />
-                      </IconButton>
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        elevation={1}
-                        onClose={handleClose}
-                        MenuListProps={{
-                          "aria-labelledby": "basic-button",
-                        }}
-                      >
-                        <MenuItem
-                          sx={{
-                            fontSize: "1rem",
-                            borderBottom: "1px solid #e0e0e0",
-                          }}
-                          onClick={(e: React.MouseEvent) => {
-                            handleClose(e);
-                          }}
-                        >
-                          Delete
-                        </MenuItem>
-                        <MenuItem
-                          onClick={(e: React.MouseEvent) => {
-                            handleClose(e);
-                          }}
-                        >
-                          Edit
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  )}
+                <div>
+                  <img
+                    className="rounded-full ring-1 ring-slate-300"
+                    src={
+                      comment.photo === null
+                        ? "/images/profile-pic-placeholder.webp"
+                        : `${server}${comment.photo.path}`
+                    }
+                    width={35}
+                    height={35}
+                    alt="profile picture"
+                  />
                 </div>
-                <div className="truncate text-pretty text-base">
-                  {/* Converts avery \n into a paragraph */}
-                  {comment.comment
-                    .split("\n")
-                    .map((line, i) =>
-                      line === "" ? (
-                        <br key={`${comment._id}${i}`} />
-                      ) : (
-                        <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
-                      ),
-                    )}
+                <div className="w-11/12 max-md:space-y-8">
+                  <div>
+                    <div className="relative mb-5 flex h-5 flex-col items-start md:flex-row md:gap-2">
+                      <div className="text-sm font-bold text-slate-500 dark:text-slate-300">
+                        {comment.name}
+                      </div>
+                      <div className="relative bottom-5 text-slate-400 max-md:hidden max-md:text-2xl md:text-4xl dark:text-slate-200">
+                        .
+                      </div>
+                      <div className="text-slate-500 max-md:text-[0.70rem] max-md:leading-[1.390] md:self-center md:text-[0.80rem] md:leading-snug dark:text-slate-300">
+                        {comment.date}
+                      </div>
+                      {member === "admin" && user._id === comment.author && (
+                        <div>
+                          <IconButton
+                            id={comment._id}
+                            className="icons absolute right-[-15px] top-[-15px] max-md:right-[-35px] max-md:top-[-50px]"
+                            onClick={handleClick}
+                          >
+                            <MoreHorizIcon sx={{ opacity: 0.7 }} />
+                          </IconButton>
+                          <Menu
+                            id="basic-menu"
+                            anchorEl={anchorEl}
+                            open={open}
+                            elevation={1}
+                            onClose={handleClose}
+                            MenuListProps={{
+                              "aria-labelledby": "basic-button",
+                            }}
+                          >
+                            <MenuItem
+                              sx={{
+                                fontSize: "1rem",
+                                borderBottom: "1px solid #e0e0e0",
+                              }}
+                              onClick={(e: React.MouseEvent) => {
+                                handleClose(e);
+                              }}
+                            >
+                              Delete
+                            </MenuItem>
+                            <MenuItem
+                              onClick={(e: React.MouseEvent) => {
+                                handleClose(e);
+                              }}
+                            >
+                              Edit
+                            </MenuItem>
+                          </Menu>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-[104%] truncate text-pretty text-sm">
+                    {/* Converts avery \n into a paragraph */}
+                    {comment.comment
+                      .split("\n")
+                      .map((line, i) =>
+                        line === "" ? (
+                          <br key={`${comment._id}${i}`} />
+                        ) : (
+                          <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
+                        ),
+                      )}
+                  </div>
                 </div>
               </div>
             ))}
