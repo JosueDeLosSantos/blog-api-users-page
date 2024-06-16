@@ -24,7 +24,7 @@ const Router = () => {
         },
         {
           path: "posts",
-          element: <Posts />,
+          element: <Posts server={server} />,
         },
         {
           path: "posts/post/:name",
@@ -32,15 +32,15 @@ const Router = () => {
         },
         {
           path: "log-in",
-          element: <LogIn />,
+          element: <LogIn server={server} />,
         },
         {
           path: "sign-up",
-          element: <SignUp />,
+          element: <SignUp server={server} />,
         },
         {
           path: "profile",
-          element: <Profile />,
+          element: <Profile server={server} />,
         },
         {
           path: "server-error",

@@ -59,6 +59,9 @@ function Post({ server }: { server: string }) {
   const [post, setPost] = useState<onePostType>(initialPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [commentsOptionsVisibility, setCommentsOptionsVisibility] =
+    useState(""); // '' / 'none'
   const [commentToEdit, setCommentToEdit] = useState<commentType>({
     _id: "",
     comment: "",
@@ -70,6 +73,10 @@ function Post({ server }: { server: string }) {
     photo: null,
     __v: 0,
   });
+
+  function manageCommentsOptionsVisibility(v: string) {
+    setCommentsOptionsVisibility(v);
+  }
 
   // keep comments array updated to avoid unnecessary API calls
   function addComment(arg: commentType) {
@@ -120,8 +127,8 @@ function Post({ server }: { server: string }) {
         headers["Authorization"] = `Bearer ${jwtToken}`;
       }
       try {
-        const server = `http://localhost:3000/user/posts/${urlId}`;
-        const response = await axios.get(server, {
+        const url = `${server}user/posts/${urlId}`;
+        const response = await axios.get(url, {
           headers: headers,
         });
 
@@ -150,8 +157,6 @@ function Post({ server }: { server: string }) {
   }, []);
 
   // MARK: Delete/Edit buttons
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -173,7 +178,8 @@ function Post({ server }: { server: string }) {
   };
 
   async function deleteComment(commentId: string) {
-    const apiUrl = `http://localhost:3000/user/comments/${commentId}`;
+    setAnchorEl(null);
+    const apiUrl = `${server}user/comments/${commentId}`;
     try {
       const jwtToken = localStorage.getItem("accessToken");
       const headers: Record<string, string> = {};
@@ -183,7 +189,6 @@ function Post({ server }: { server: string }) {
       const response = await axios.delete(apiUrl, {
         headers: headers,
       });
-      setAnchorEl(null);
       setPost(response.data.post);
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -200,12 +205,16 @@ function Post({ server }: { server: string }) {
   }
 
   function editComment(commentId: string) {
+    setAnchorEl(null);
+    manageCommentsOptionsVisibility("none");
     const selectedComment = post.comments.filter(
       (comment) => comment._id === commentId,
     )[0];
-    setAnchorEl(null);
     setIsEditing(true);
-    setCommentToEdit(selectedComment);
+    setCommentToEdit({
+      ...selectedComment,
+      comment: he.decode(selectedComment.comment),
+    });
 
     const commentsBoxSection = document.getElementById("edit-comment-box");
     window.scrollTo({
@@ -215,8 +224,6 @@ function Post({ server }: { server: string }) {
   }
 
   const { windowWidth } = useWindowSize();
-
-  console.log(post);
 
   // MARK: return
 
@@ -257,7 +264,7 @@ function Post({ server }: { server: string }) {
           </ThemeProvider>
         )}
 
-        <article className="mx-auto max-w-[900px] rounded-lg border border-solid border-slate-200 bg-white pb-3 sm:w-9/12 dark:border-slate-950 dark:bg-slate-800">
+        <article className="mx-auto max-w-[900px] rounded-lg border border-solid border-slate-200 bg-white pb-3 max-sm:w-full sm:w-9/12 dark:border-slate-950 dark:bg-slate-800">
           <header id="post-header">
             <div
               className="relative mx-auto  w-full md:mb-0"
@@ -271,7 +278,7 @@ function Post({ server }: { server: string }) {
                 }}
               ></div>
               <img
-                src={`http://localhost:3000/${post?.file.path}`}
+                src={`${server}${post?.file.path}`}
                 className="absolute left-0 top-0 z-0 h-full w-full rounded-lg object-cover"
               />
 
@@ -332,7 +339,10 @@ function Post({ server }: { server: string }) {
           {/* Comment's box */}
           {member === "admin" && post?.post && (
             <CommentsBox
+              server={server}
               formData={commentToEdit}
+              commentsOptionsVisibility={commentsOptionsVisibility}
+              manageCommentsOptionsVisibility={manageCommentsOptionsVisibility}
               setFormData={setCommentToEdit}
               setIsEditing={setIsEditing}
               isEditing={isEditing}
@@ -343,7 +353,7 @@ function Post({ server }: { server: string }) {
           )}
           <div id="comments-box" className="mx-auto max-w-screen-md">
             {post?.comments?.length > 0 && (
-              <div className="mx-auto mt-10 text-center">
+              <div className="mx-auto mb-8 mt-10 text-center">
                 <h2>Comments</h2>
               </div>
             )}
@@ -366,7 +376,7 @@ function Post({ server }: { server: string }) {
               >
                 <div>
                   <img
-                    className="rounded-full ring-1 ring-slate-300"
+                    className="rounded-full ring-1 ring-slate-400 dark:ring-slate-300"
                     src={
                       comment.photo === null
                         ? "/images/profile-pic-placeholder.webp"
@@ -395,6 +405,7 @@ function Post({ server }: { server: string }) {
                             id={comment._id}
                             className="icons absolute right-[-15px] top-[-15px] max-md:right-[-35px] max-md:top-[-50px]"
                             onClick={handleClick}
+                            style={{ display: `${commentsOptionsVisibility}` }}
                           >
                             <MoreHorizIcon sx={{ opacity: 0.7 }} />
                           </IconButton>
@@ -423,6 +434,7 @@ function Post({ server }: { server: string }) {
                               onClick={(e: React.MouseEvent) => {
                                 handleClose(e);
                               }}
+                              sx={{ display: `${commentsOptionsVisibility}` }}
                             >
                               Edit
                             </MenuItem>
@@ -431,7 +443,7 @@ function Post({ server }: { server: string }) {
                       )}
                     </div>
                   </div>
-                  <div className="w-[104%] truncate text-pretty text-sm">
+                  <div className="w-full truncate text-pretty text-sm">
                     {/* Converts avery \n into a paragraph */}
                     {comment.comment
                       .split("\n")

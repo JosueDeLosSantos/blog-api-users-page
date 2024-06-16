@@ -10,15 +10,12 @@ import { postTypes } from "../modules/posts/types";
 import SkeletonPostsPage from "./SkeletonPostsPage";
 import { useNavigate } from "react-router-dom";
 
-function Index() {
+function Index({ server }: { server: string }) {
   const dispatch: AppDispatch = useDispatch();
   const posts = useSelector((state: RootState) => state.posts);
   const [loadState, setLoadState] = useState("loading");
   const navigate = useNavigate();
 
-  // http://localhost:3000/
-  // https://dummy-blog.adaptable.app/
-  const server = "http://localhost:3000/";
   // request all posts
   useEffect(() => {
     // make an API call only if the state array is empty
@@ -61,7 +58,7 @@ function Index() {
         }
       }
     })();
-  }, [posts, dispatch, navigate]);
+  }, [posts, server, dispatch, navigate]);
 
   return (
     (loadState === "loading" && (

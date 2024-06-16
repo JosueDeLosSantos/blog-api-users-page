@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import he from "he";
 import axios, { AxiosError } from "axios";
@@ -7,27 +7,57 @@ import { onePostType } from "../types";
 import TextareaAutosize from "react-textarea-autosize";
 
 function CommentsBox({
+  server,
   post_id,
   formData,
   isEditing,
+  commentsOptionsVisibility,
+  manageCommentsOptionsVisibility,
   setIsEditing,
   setFormData,
   addComment,
   setPost,
 }: {
+  server: string;
   post_id: string;
   formData: commentType;
   isEditing: boolean;
+  commentsOptionsVisibility: string;
+  manageCommentsOptionsVisibility: (param: string) => void;
   setIsEditing: (arg: boolean) => void;
   setFormData: (arg: commentType) => void;
   addComment: (arg: commentType) => void;
   setPost: (arg: onePostType) => void;
 }) {
   const navigate = useNavigate();
+  const [commentsBoxOptionsVisibility, setCommentsBoxOptionsVisibility] =
+    useState("none"); // "" / "none"
+  const [postCommentBtnVisibility, setPostCommentBtnVisibility] =
+    useState("none");
+
+  function onPostComment() {
+    setPostCommentBtnVisibility("none");
+  }
+
+  function manageCommentsBoxOptionsVisibility(v: string) {
+    setCommentsBoxOptionsVisibility(v);
+  }
+
+  useEffect(() => {
+    if (commentsOptionsVisibility === "none") {
+      manageCommentsBoxOptionsVisibility("");
+    } else {
+      manageCommentsBoxOptionsVisibility("none");
+    }
+  }),
+    [commentsOptionsVisibility];
 
   const handleCommentChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ): void => {
+    if (postCommentBtnVisibility === "none") {
+      setPostCommentBtnVisibility("");
+    }
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -36,6 +66,7 @@ function CommentsBox({
   // MARK: onSubmit
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    manageCommentsBoxOptionsVisibility("none");
 
     // get security token
     const jwtToken = localStorage.getItem("accessToken");
@@ -43,9 +74,8 @@ function CommentsBox({
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
     }
-    // http://localhost:3000/
-    // https://dummy-blog.adaptable.app/comments
-    const apiUrl = "http://localhost:3000/user/comments";
+
+    const apiUrl = `${server}user/comments`;
 
     if (isEditing) {
       const target = e.target as HTMLElement;
@@ -184,26 +214,39 @@ function CommentsBox({
           </div>
 
           {!isEditing && (
-            <div className="box-border flex">
+            <div
+              style={{ display: `${postCommentBtnVisibility}` }}
+              className="box-border flex"
+            >
               <button
                 type="submit"
                 className="mt-5 cursor-pointer rounded-sm bg-black px-6 py-4 text-white hover:bg-slate-700 focus:outline-none focus:ring-offset-2 active:border-blue-300 dark:border dark:hover:bg-slate-900"
+                onClick={onPostComment}
               >
                 Post Comment →
               </button>
             </div>
           )}
           {isEditing && (
-            <div className="mt-4 box-border flex gap-2 sm:gap-3">
+            <div
+              style={{ display: `${commentsBoxOptionsVisibility}` }}
+              className="mt-4 box-border flex gap-2 sm:gap-3"
+            >
               <button
-                onClick={onSubmit}
+                onClick={(e) => {
+                  onSubmit(e);
+                  manageCommentsOptionsVisibility("");
+                }}
                 type="button"
                 className="cursor-pointer rounded-sm border-0 bg-green-100 px-2 py-1 text-slate-600 ring-2 ring-green-400 hover:bg-green-200 dark:bg-green-400 dark:text-slate-800 dark:ring-green-800"
               >
                 Accept
               </button>
               <button
-                onClick={onSubmit}
+                onClick={(e) => {
+                  onSubmit(e);
+                  manageCommentsOptionsVisibility("");
+                }}
                 type="button"
                 className="cursor-pointer rounded-sm border-0 bg-slate-50 px-2 py-1 text-slate-500 ring-2 ring-slate-400 hover:bg-slate-100 dark:border dark:border-blue-300 dark:bg-slate-900 dark:text-slate-50 dark:ring-0 dark:hover:bg-slate-800"
               >
