@@ -16,12 +16,12 @@ const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <Hero />,
+    },
+    {
+      path: "/",
       element: <Navbar />,
       children: [
-        {
-          index: true,
-          element: <Hero />,
-        },
         {
           path: "posts",
           element: <Posts server={server} />,
@@ -30,24 +30,25 @@ const Router = () => {
           path: "posts/post/:name",
           element: <Post server={server} />,
         },
-        {
-          path: "log-in",
-          element: <LogIn server={server} />,
-        },
-        {
-          path: "sign-up",
-          element: <SignUp server={server} />,
-        },
+
         {
           path: "profile",
           element: <Profile server={server} />,
         },
-        {
-          path: "server-error",
-          element: <ServerError />,
-        },
       ],
       errorElement: <NotFound />,
+    },
+    {
+      path: "log-in",
+      element: <LogIn server={server} />,
+    },
+    {
+      path: "sign-up",
+      element: <SignUp server={server} />,
+    },
+    {
+      path: "server-error",
+      element: <ServerError />,
     },
   ]);
   return <RouterProvider router={router} />;

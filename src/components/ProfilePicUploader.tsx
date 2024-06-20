@@ -232,7 +232,7 @@ const BlogImgUploadBtn: React.FC<ImgUploadBtnProps> = ({
   onImageUpload,
 }) => {
   return (
-    <div className="mx-auto w-full text-start md:mb-0 xl:text-xl">
+    <div className="mx-auto w-full text-start">
       <button
         style={{ display: `${imageContainer}` }}
         className={
@@ -400,7 +400,7 @@ const BlogImgRemovalBtn: React.FC<ImgRemovalBtnProps> = ({
           onProfilePicChange();
           onCrop("block");
         }}
-        className="w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 max-md:mt-5 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+        className="w-full cursor-pointer rounded border-none bg-white px-[1em] py-[0.5em] text-sm font-semibold text-slate-600 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
       >
         Remove
       </button>

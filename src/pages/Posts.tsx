@@ -58,7 +58,8 @@ function Index({ server }: { server: string }) {
         }
       }
     })();
-  }, [posts, server, dispatch, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     (loadState === "loading" && (

@@ -1,5 +1,5 @@
 import MenuBar from "../../../components/MenuBar";
-import MenuBarLarge from "../../../components/MenuBarLarge";
+import MenuBarLarge from "../../../components/SideNav";
 import { SyntheticEvent, useEffect, useRef, useState, Suspense } from "react";
 import { postTypes } from "../types";
 import ColorThief from "colorthief";

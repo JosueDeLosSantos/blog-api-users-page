@@ -228,43 +228,41 @@ function Post({ server }: { server: string }) {
   // MARK: return
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      <main className="flex gap-4 pb-5 pl-5 pr-5 pt-24">
-        {member === "admin" && (
-          <ThemeProvider theme={theme}>
-            <div
-              className={
-                windowWidth > 770
-                  ? "fixed flex h-screen w-fit flex-col gap-8 pt-10"
-                  : "toolbarBorder fixed bottom-0 left-0 z-50 flex w-screen justify-around bg-white p-2 shadow-[0px_-0.5px_5px_rgb(148,163,184)]  dark:bg-slate-800 dark:shadow-none"
-              }
-            >
-              <div>
-                <IconButton onClick={() => ScrollTo("comments")}>
-                  <Badge badgeContent={post?.comments.length} color="primary">
-                    <ForumOutlinedIcon
-                      className="icons"
-                      fontSize="medium"
-                      color="secondary"
-                    />
-                  </Badge>
-                </IconButton>
-              </div>
-
-              <div>
-                <IconButton onClick={() => ScrollTo("posts")}>
-                  <KeyboardArrowUpIcon
+    <div className="min-h-screen bg-slate-100 lg:w-[95%] dark:bg-slate-950">
+      <div className="flex gap-4 px-5 pb-5 max-lg:pt-14 lg:pt-2">
+        <ThemeProvider theme={theme}>
+          <div
+            className={
+              windowWidth > 1023
+                ? "fixed right-5 flex h-screen w-fit flex-col gap-8 pt-10"
+                : "toolbarBorder fixed bottom-0 left-0 z-50 flex w-screen justify-around bg-white p-2 shadow-[0px_-0.5px_5px_rgb(148,163,184)]  dark:bg-slate-800 dark:shadow-none"
+            }
+          >
+            <div>
+              <IconButton onClick={() => ScrollTo("comments")}>
+                <Badge badgeContent={post?.comments.length} color="primary">
+                  <ForumOutlinedIcon
                     className="icons"
                     fontSize="medium"
                     color="secondary"
                   />
-                </IconButton>
-              </div>
+                </Badge>
+              </IconButton>
             </div>
-          </ThemeProvider>
-        )}
 
-        <article className="mx-auto max-w-[900px] rounded-lg border border-solid border-slate-200 bg-white pb-3 max-sm:w-full sm:w-9/12 dark:border-slate-950 dark:bg-slate-800">
+            <div>
+              <IconButton onClick={() => ScrollTo("posts")}>
+                <KeyboardArrowUpIcon
+                  className="icons"
+                  fontSize="medium"
+                  color="secondary"
+                />
+              </IconButton>
+            </div>
+          </div>
+        </ThemeProvider>
+
+        <article className="w-full rounded-lg border border-solid border-slate-200 bg-white pb-3 dark:border-slate-950 dark:bg-slate-800">
           <header id="post-header">
             <div
               className="relative mx-auto  w-full md:mb-0"
@@ -376,7 +374,7 @@ function Post({ server }: { server: string }) {
               >
                 <div>
                   <img
-                    className="rounded-full ring-1 ring-slate-400 dark:ring-slate-300"
+                    className="rounded-full ring-1 ring-slate-400 dark:ring-slate-500"
                     src={
                       comment.photo === null
                         ? "/images/profile-pic-placeholder.webp"
@@ -460,20 +458,7 @@ function Post({ server }: { server: string }) {
             ))}
           </div>
         </article>
-      </main>
-      {member === "user" && (
-        <span onClick={() => ScrollTo("comments")}>
-          <div className="fixed bottom-5 left-5 w-fit cursor-pointer rounded-full bg-neutral-950 p-3 dark:bg-purple-700">
-            <ThemeProvider theme={theme}>
-              {post?.comments && (
-                <Badge badgeContent={post.comments.length} color="primary">
-                  <ForumIcon fontSize="large" color="info" />
-                </Badge>
-              )}
-            </ThemeProvider>
-          </div>
-        </span>
-      )}
+      </div>
     </div>
   );
 }
