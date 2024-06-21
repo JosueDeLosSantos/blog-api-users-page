@@ -1,5 +1,3 @@
-import MenuBar from "../../../components/MenuBar";
-import MenuBarLarge from "../../../components/SideNav";
 import { SyntheticEvent, useEffect, useRef, useState, Suspense } from "react";
 import { postTypes } from "../types";
 import ColorThief from "colorthief";
@@ -7,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
 import postsAmountController from "../utils/postsAmountController";
 import SkeletonPostsPage from "../../../pages/SkeletonPostsPage";
-import useWindowSize from "../../../hooks/windowSize";
+
+import PostsSearchBar from "./PostsSearchBar";
 
 function postsInitialValue(v: postTypes[]) {
   if (v.length) {
@@ -117,8 +116,9 @@ function PostsTemplate({
   // MARK: return
 
   return (
-    <div className="max-h-auto min-h-screen bg-slate-100 dark:bg-slate-950">
-      <div className="mx-auto w-fit pt-24">
+    <div className="max-h-auto min-h-screen bg-slate-100 pt-2 dark:bg-slate-950">
+      <div className="mx-auto w-fit">
+        <PostsSearchBar />
         <Suspense fallback={<SkeletonPostsPage />}>
           {postsCopy &&
             postsCopy.map((post, index) => (
