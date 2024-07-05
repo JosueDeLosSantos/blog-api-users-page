@@ -5,7 +5,6 @@ import CommentsBox from "../modules/posts/components/CommentsBox";
 import { onePostType } from "../modules/posts/types";
 import he from "he"; // decodes mongodb encoded HTML
 import React, { useState, useEffect } from "react";
-import ForumIcon from "@mui/icons-material/Forum";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Badge from "@mui/material/Badge";
@@ -17,6 +16,7 @@ import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import useWindowSize from "../hooks/windowSize";
+import useDynamicStyles from "../hooks/useDynamicStyles";
 
 const theme = createTheme({
   palette: {
@@ -57,6 +57,8 @@ function Post({ server }: { server: string }) {
   const member = useSelector((state: RootState) => state.privilege);
   const initialPost = null as unknown as onePostType;
   const [post, setPost] = useState<onePostType>(initialPost);
+  const [originalPost, setOriginalPost] = useState<onePostType>(initialPost);
+  useDynamicStyles(post, originalPost, setPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -132,9 +134,14 @@ function Post({ server }: { server: string }) {
           headers: headers,
         });
 
+        console.log(response);
+
         dispatch(switchPrivilege("admin"));
         setUser(response.data.user);
+        // the following post is subject to change due to admins's color scheme preferences
         setPost(response.data.post);
+        // this is the original post and will be needed to edit it
+        setOriginalPost(response.data.post);
         setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -147,6 +154,7 @@ function Post({ server }: { server: string }) {
           const userData = axiosError?.response?.data as userPostType;
           dispatch(switchPrivilege("user"));
           setPost(userData.post);
+          setOriginalPost(userData.post);
         } else {
           navigate("/server-error");
         }
@@ -239,7 +247,10 @@ function Post({ server }: { server: string }) {
             }
           >
             <div>
-              <IconButton onClick={() => ScrollTo("comments")}>
+              <IconButton
+                title="See Comments"
+                onClick={() => ScrollTo("comments")}
+              >
                 <Badge badgeContent={post?.comments.length} color="primary">
                   <ForumOutlinedIcon
                     className="icons"
@@ -251,7 +262,7 @@ function Post({ server }: { server: string }) {
             </div>
 
             <div>
-              <IconButton onClick={() => ScrollTo("posts")}>
+              <IconButton title="Back to top" onClick={() => ScrollTo("posts")}>
                 <KeyboardArrowUpIcon
                   className="icons"
                   fontSize="medium"
@@ -263,6 +274,7 @@ function Post({ server }: { server: string }) {
         </ThemeProvider>
 
         <article className="w-full rounded-lg border border-solid border-slate-200 bg-white pb-3 dark:border-slate-950 dark:bg-slate-800">
+          {/* MARK: Post's header */}
           <header id="post-header">
             <div
               className="relative mx-auto  w-full md:mb-0"

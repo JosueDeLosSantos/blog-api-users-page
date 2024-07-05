@@ -49,6 +49,27 @@ html {
   height: calc(100vh - 4 * 40px - 178.391px);
 }
 
+.image {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image-style-align-right {
+  display: inline;
+  float: right;
+  margin: 1em 0 1em 1em;
+}
+
+.image-style-align-left {
+  display: inline;
+  float: left;
+  margin: 1em 1em 1em 0;
+}
+
+.table {
+  display: table;
+}
+
 /* Beam of light background effect */
 .bg-custom-animation-1 {
   background: linear-gradient(
@@ -136,6 +157,10 @@ html {
 
   .css-kt4sq3-MuiButtonBase-root-MuiMenuItem-root {
     border-bottom: 1px solid #777676 !important;
+  }
+
+  .css-78trlr-MuiButtonBase-root-MuiIconButton-root:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   .toolbarBorder {
