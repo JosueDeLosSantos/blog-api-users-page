@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
+import { switchPrivilege } from "../utils/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";

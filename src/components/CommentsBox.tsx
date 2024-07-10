@@ -2,8 +2,8 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import he from "he";
 import axios, { AxiosError } from "axios";
-import { commentType } from "../../../pages/Post";
-import { onePostType } from "../types";
+import { commentType } from "../pages/Post";
+import { onePostType } from "../types/types";
 import TextareaAutosize from "react-textarea-autosize";
 
 function CommentsBox({
@@ -200,7 +200,7 @@ function CommentsBox({
               name="comment"
               onInput={handleCommentChange}
               maxLength={3000}
-              className="box-border w-full resize-none rounded-sm border border-solid border-slate-300 bg-slate-100 px-3 py-2  focus:border-blue-300  focus:outline-none dark:bg-slate-900"
+              className="box-border w-full resize-none rounded-sm border border-solid border-slate-300 bg-slate-100 px-3 py-2  focus:border-blue-300  focus:outline-none dark:bg-slate-950"
               placeholder="Type Comment...*"
               minRows={5}
               value={he.decode(formData.comment)}

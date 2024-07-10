@@ -1,10 +1,10 @@
 import { SyntheticEvent, useEffect, useRef, useState, Suspense } from "react";
-import { postTypes } from "../types";
+import { postTypes } from "../types/types";
 import ColorThief from "colorthief";
 import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
 import postsAmountController from "../utils/postsAmountController";
-import SkeletonPostsPage from "../../../pages/SkeletonPostsPage";
+import SkeletonPostsPage from "../pages/SkeletonPostsPage";
 
 import PostsSearchBar from "./PostsSearchBar";
 

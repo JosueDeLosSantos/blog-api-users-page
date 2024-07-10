@@ -1,8 +1,8 @@
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../app/rootReducer";
-import { postTypes } from "../types";
+import { RootState } from "../app/rootReducer";
+import { postTypes } from "../types/types";
 import { Link } from "react-router-dom";
 
 export default function Main() {

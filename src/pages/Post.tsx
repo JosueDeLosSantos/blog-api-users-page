@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import CommentsBox from "../modules/posts/components/CommentsBox";
-import { onePostType } from "../modules/posts/types";
+import CommentsBox from "../components/CommentsBox";
+import { onePostType } from "../types/types";
 import he from "he"; // decodes mongodb encoded HTML
 import React, { useState, useEffect } from "react";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
@@ -12,11 +12,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
+import { switchPrivilege } from "../utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import useWindowSize from "../hooks/windowSize";
-import useDynamicStyles from "../hooks/useDynamicStyles";
+import dynamicStyles from "../utils/dynamicStyles";
 
 const theme = createTheme({
   palette: {
@@ -57,8 +57,6 @@ function Post({ server }: { server: string }) {
   const member = useSelector((state: RootState) => state.privilege);
   const initialPost = null as unknown as onePostType;
   const [post, setPost] = useState<onePostType>(initialPost);
-  const [originalPost, setOriginalPost] = useState<onePostType>(initialPost);
-  useDynamicStyles(post, originalPost, setPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -134,14 +132,10 @@ function Post({ server }: { server: string }) {
           headers: headers,
         });
 
-        console.log(response);
-
         dispatch(switchPrivilege("admin"));
         setUser(response.data.user);
         // the following post is subject to change due to admins's color scheme preferences
-        setPost(response.data.post);
-        // this is the original post and will be needed to edit it
-        setOriginalPost(response.data.post);
+        dynamicStyles(response.data.post, setPost);
         setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -153,8 +147,7 @@ function Post({ server }: { server: string }) {
           type userPostType = { post: onePostType };
           const userData = axiosError?.response?.data as userPostType;
           dispatch(switchPrivilege("user"));
-          setPost(userData.post);
-          setOriginalPost(userData.post);
+          dynamicStyles(userData.post, setPost);
         } else {
           navigate("/server-error");
         }
@@ -236,7 +229,7 @@ function Post({ server }: { server: string }) {
   // MARK: return
 
   return (
-    <div className="min-h-screen bg-slate-100 lg:w-[95%] dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-100 lg:w-[94.5%] dark:bg-slate-950">
       <div className="flex gap-4 px-5 pb-5 max-lg:pt-14 lg:pt-2">
         <ThemeProvider theme={theme}>
           <div
@@ -256,6 +249,7 @@ function Post({ server }: { server: string }) {
                     className="icons"
                     fontSize="medium"
                     color="secondary"
+                    titleAccess="Comments"
                   />
                 </Badge>
               </IconButton>
@@ -267,6 +261,7 @@ function Post({ server }: { server: string }) {
                   className="icons"
                   fontSize="medium"
                   color="secondary"
+                  titleAccess="Back to top"
                 />
               </IconButton>
             </div>
@@ -363,7 +358,7 @@ function Post({ server }: { server: string }) {
           )}
           <div id="comments-box" className="mx-auto max-w-screen-md">
             {post?.comments?.length > 0 && (
-              <div className="mx-auto mb-8 mt-10 text-center">
+              <div className="mx-auto mb-12 mt-10 text-center">
                 <h2>Comments</h2>
               </div>
             )}
@@ -388,9 +383,9 @@ function Post({ server }: { server: string }) {
                   <img
                     className="rounded-full ring-1 ring-slate-400 dark:ring-slate-500"
                     src={
-                      comment.photo === null
+                      comment.photo === undefined || comment.photo === null
                         ? "/images/profile-pic-placeholder.webp"
-                        : `${server}${comment.photo.path}`
+                        : `${server}${comment.photo?.path}`
                     }
                     width={35}
                     height={35}
@@ -453,7 +448,7 @@ function Post({ server }: { server: string }) {
                       )}
                     </div>
                   </div>
-                  <div className="w-full truncate text-pretty text-sm">
+                  <div className="w-full truncate text-pretty text-sm dark:text-slate-100">
                     {/* Converts avery \n into a paragraph */}
                     {comment.comment
                       .split("\n")

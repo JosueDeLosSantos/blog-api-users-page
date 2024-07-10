@@ -28,7 +28,6 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  overflow: auto;
 }
 
 html {
@@ -54,6 +53,18 @@ html {
   margin-right: auto;
 }
 
+.image-style-block-align-left {
+  display: block;
+  margin-right: auto;
+  margin-left: 0px;
+}
+
+.image-style-block-align-right {
+  display: block;
+  margin-right: 0px;
+  margin-left: auto;
+}
+
 .image-style-align-right {
   display: inline;
   float: right;
@@ -64,10 +75,6 @@ html {
   display: inline;
   float: left;
   margin: 1em 1em 1em 0;
-}
-
-.table {
-  display: table;
 }
 
 /* Beam of light background effect */
@@ -94,6 +101,18 @@ html {
   animation: animated-bg 60s linear infinite;
 }
 
+.table {
+  display: table;
+}
+
+figure.table {
+  margin: 1rem auto !important;
+}
+
+figure.table[style] {
+  margin: 1rem !important;
+}
+
 /* Light mode */
 @media (prefers-color-scheme: light) {
   h1,
@@ -102,10 +121,6 @@ html {
   h4,
   .icons {
     color: #333 !important;
-  }
-
-  .logo {
-    color: #721ea3 !important;
   }
 
   html {
@@ -128,26 +143,26 @@ html {
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  strong,
-  blockquote,
-  a,
-  h1,
-  h2:not(.except),
-  h3,
-  h4,
+  a:not(.ck-editor__editable *),
+  h1:not(.ck-editor__editable *),
+  h2:not(.ck-editor__editable *),
+  h3:not(.ck-editor__editable *),
+  h4:not(.ck-editor__editable *),
+  label,
+  textarea,
   .icons,
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
     color: rgb(241, 245, 249, 1) !important;
   }
 
-  .logo {
-    color: #e0abff !important;
+  strong,
+  code {
+    color: inherit !important;
   }
 
   html,
   .ck-editor__main * {
-    background-color: rgb(2, 6, 23, 1) !important;
-    color: rgb(241, 245, 249, 1) !important;
+    color: inherit;
   }
 
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
@@ -157,10 +172,6 @@ html {
 
   .css-kt4sq3-MuiButtonBase-root-MuiMenuItem-root {
     border-bottom: 1px solid #777676 !important;
-  }
-
-  .css-78trlr-MuiButtonBase-root-MuiIconButton-root:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   .toolbarBorder {
