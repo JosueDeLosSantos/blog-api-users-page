@@ -49,7 +49,7 @@ export default function MenuBar() {
 
   return (
     <div className="sticky top-0 flex h-screen w-1/5 flex-col border border-solid border-slate-200 bg-white p-2 shadow-none dark:border-slate-900 dark:bg-slate-800">
-      <div className="flex h-1/5 items-center justify-center rounded bg-blue-100 text-center font-PressStart2P text-purple-700 dark:bg-purple-600 dark:text-purple-100">
+      <div className="flex h-1/5 items-center justify-center rounded bg-blue-100 text-center font-PressStart2P text-purple-700 dark:bg-purple-500 dark:text-purple-100">
         <LaptopIcon />
         {"<JCODER>"}
       </div>
@@ -66,7 +66,7 @@ export default function MenuBar() {
         {member && (
           <div
             data-menuitem="1"
-            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/posts" && "bg-blue-100 text-purple-700 dark:bg-purple-700  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
+            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/posts" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
             onClick={allPost}
           >
             <DynamicFeedOutlinedIcon data-menuitem="1" />
@@ -96,7 +96,7 @@ export default function MenuBar() {
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-600 hover:text-white dark:bg-slate-700 dark:hover:bg-blue-100 dark:hover:text-purple-700"
             onClick={signIn}
           >
-            <VpnKeyOutlinedIcon data-menuitem="3" sx={{ fontSize: "1.2rem" }} />
+            <VpnKeyOutlinedIcon data-menuitem="3" />
             <span data-menuitem="3" className="ml-2">
               Sing In
             </span>
@@ -106,7 +106,7 @@ export default function MenuBar() {
           <>
             <div
               data-menuitem="5"
-              className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/profile" && "bg-blue-100 text-purple-700 dark:bg-purple-700  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
+              className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/profile" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
               onClick={profile}
             >
               <AccountCircleOutlinedIcon data-menuitem="5" />
