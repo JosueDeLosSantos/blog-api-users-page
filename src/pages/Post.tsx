@@ -241,6 +241,13 @@ function Post({ server }: { server: string }) {
           >
             <div>
               <IconButton
+                sx={{
+                  "@media (prefers-color-scheme: dark)": {
+                    "&:hover": {
+                      backgroundColor: "#1e293b",
+                    },
+                  },
+                }}
                 title="See Comments"
                 onClick={() => ScrollTo("comments")}
               >
@@ -256,7 +263,17 @@ function Post({ server }: { server: string }) {
             </div>
 
             <div>
-              <IconButton title="Back to top" onClick={() => ScrollTo("posts")}>
+              <IconButton
+                sx={{
+                  "@media (prefers-color-scheme: dark)": {
+                    "&:hover": {
+                      backgroundColor: "#1e293b",
+                    },
+                  },
+                }}
+                title="Back to top"
+                onClick={() => ScrollTo("posts")}
+              >
                 <KeyboardArrowUpIcon
                   className="icons"
                   fontSize="medium"
@@ -359,7 +376,7 @@ function Post({ server }: { server: string }) {
           <div id="comments-box" className="mx-auto max-w-screen-md">
             {post?.comments?.length > 0 && (
               <div className="mx-auto mb-12 mt-10 text-center">
-                <h2>Comments</h2>
+                <h3 className="font-semibold">Comments</h3>
               </div>
             )}
             {member === "user" && (
@@ -406,6 +423,13 @@ function Post({ server }: { server: string }) {
                       {member === "admin" && user._id === comment.author && (
                         <div>
                           <IconButton
+                            sx={{
+                              "@media (prefers-color-scheme: dark)": {
+                                "&:hover": {
+                                  backgroundColor: "#334155",
+                                },
+                              },
+                            }}
                             id={comment._id}
                             className="icons absolute right-[-15px] top-[-15px] max-md:right-[-35px] max-md:top-[-50px]"
                             onClick={handleClick}
@@ -425,8 +449,15 @@ function Post({ server }: { server: string }) {
                           >
                             <MenuItem
                               sx={{
-                                fontSize: "1rem",
-                                borderBottom: "1px solid #e0e0e0",
+                                display: `${commentsOptionsVisibility}`,
+                                "@media (prefers-color-scheme: dark)": {
+                                  backgroundColor: "#334155",
+                                  borderBottom: "1px solid #737374",
+                                },
+                                "&:hover": {
+                                  backgroundColor: "#3b82f6",
+                                  color: "white",
+                                },
                               }}
                               onClick={(e: React.MouseEvent) => {
                                 handleClose(e);
@@ -438,7 +469,18 @@ function Post({ server }: { server: string }) {
                               onClick={(e: React.MouseEvent) => {
                                 handleClose(e);
                               }}
-                              sx={{ display: `${commentsOptionsVisibility}` }}
+                              sx={{
+                                display: `${commentsOptionsVisibility}`,
+                                "@media (prefers-color-scheme: dark)": {
+                                  backgroundColor: "#334155",
+                                  // without the following border, the text color is not visible
+                                  borderBottom: "0px solid #737374",
+                                },
+                                "&:hover": {
+                                  backgroundColor: "#3b82f6",
+                                  color: "white",
+                                },
+                              }}
                             >
                               Edit
                             </MenuItem>

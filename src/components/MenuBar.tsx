@@ -19,9 +19,9 @@ import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import {
-  Divider,
   Drawer,
   List,
   ListItem,
@@ -60,6 +60,10 @@ export default function MenuBar() {
 
   const profile = () => {
     navigate("/profile");
+  };
+
+  const about = () => {
+    navigate("/about");
   };
 
   const signOut = () => {
@@ -156,6 +160,20 @@ export default function MenuBar() {
                 <LogoutOutlinedIcon className="drawerContent" />
               </ListItemIcon>
               <ListItemText className="drawerContent" primary={"Sign Out"} />
+            </ListItemButton>
+          </ListItem>
+        )}
+        {member && (
+          <ListItem
+            className={`drawer-list-item ${location.pathname === "/about" && "menu-item-selected"}`}
+            onClick={about}
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <InfoOutlinedIcon className="drawerContent" />
+              </ListItemIcon>
+              <ListItemText className="drawerContent" primary={"About"} />
             </ListItemButton>
           </ListItem>
         )}

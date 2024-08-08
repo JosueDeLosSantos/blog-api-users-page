@@ -8,6 +8,7 @@ import ServerError from "../pages/ServerError";
 import LogIn from "../pages/log-in";
 import SignUp from "../pages/sign-up";
 import Profile from "../pages/Profile";
+import About from "../pages/About";
 
 const Router = () => {
   //https://dummy-blog.adaptable.app/
@@ -34,6 +35,10 @@ const Router = () => {
         {
           path: "profile",
           element: <Profile server={server} />,
+        },
+        {
+          path: "about",
+          element: <About />,
         },
       ],
       errorElement: <NotFound />,

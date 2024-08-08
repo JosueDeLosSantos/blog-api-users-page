@@ -14,6 +14,13 @@ html {
   color-scheme: light dark;
 }
 
+h2:not(.except) {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.25rem;
+}
+
 .roboto-medium {
   font-family: "Roboto", sans-serif;
   font-weight: 500;

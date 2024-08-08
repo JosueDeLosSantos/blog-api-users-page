@@ -192,9 +192,9 @@ function CommentsBox({
     >
       <div className="mx-auto mb-8 mt-14 box-border w-11/12">
         <form className="box-border w-full rounded p-4 " onSubmit={onSubmit}>
-          <h2 className="font-lighter mb-4 text-xl tracking-wider ">
+          <h3 className="mb-4 font-semibold tracking-wider ">
             Leave a Comment
-          </h2>
+          </h3>
           <div className="w-full">
             <TextareaAutosize
               name="comment"
@@ -208,7 +208,7 @@ function CommentsBox({
             ></TextareaAutosize>
             <span className="text-sm text-gray-400">{`${formData.comment.length}/3000`}</span>
             <br />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {commentError}
             </span>
           </div>
@@ -220,7 +220,7 @@ function CommentsBox({
             >
               <button
                 type="submit"
-                className="mt-5 cursor-pointer rounded-sm bg-black px-6 py-4 text-white hover:bg-slate-700 focus:outline-none focus:ring-offset-2 active:border-blue-300 dark:border dark:hover:bg-slate-900"
+                className="mt-5 cursor-pointer rounded-sm bg-blue-500 px-6 py-4 text-white hover:border-blue-300 hover:bg-blue-600 focus:outline-none focus:ring-offset-2"
                 onClick={onPostComment}
               >
                 Post Comment →
@@ -238,7 +238,7 @@ function CommentsBox({
                   manageCommentsOptionsVisibility("");
                 }}
                 type="button"
-                className="cursor-pointer rounded-sm border-0 bg-green-100 px-2 py-1 text-slate-600 ring-2 ring-green-400 hover:bg-green-200 dark:bg-green-400 dark:text-slate-800 dark:ring-green-800"
+                className="cursor-pointer rounded-sm border-0 bg-blue-500 px-2 py-1 text-white ring-2 ring-blue-700 hover:bg-blue-600"
               >
                 Accept
               </button>
@@ -248,7 +248,7 @@ function CommentsBox({
                   manageCommentsOptionsVisibility("");
                 }}
                 type="button"
-                className="cursor-pointer rounded-sm border-0 bg-slate-50 px-2 py-1 text-slate-500 ring-2 ring-slate-400 hover:bg-slate-100 dark:border dark:border-blue-300 dark:bg-slate-900 dark:text-slate-50 dark:ring-0 dark:hover:bg-slate-800"
+                className="cursor-pointer rounded-sm border-0 bg-slate-50 px-2 py-1 text-slate-500 ring-2 ring-slate-400 hover:bg-slate-100 dark:border dark:border-slate-300 dark:bg-slate-900 dark:text-slate-50 dark:ring-0 dark:hover:bg-slate-800"
               >
                 Cancel
               </button>
