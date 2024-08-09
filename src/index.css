@@ -4,6 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  @font-face {
+    font-family: "Instagram";
+    src: url(../public/fonts/instagram-font-bold.otf) format("otf");
+  }
+
+  @font-face {
+    font-family: "Linkedin";
+    src: url(../public/fonts/Linkedin-font-Semibold.ttf) format("ttf");
+  }
+
+  @font-face {
+    font-family: "Github";
+    src: url(../public/fonts/github-font-regular.ttf) format("ttf");
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -25,6 +42,10 @@ h3 {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   font-style: normal;
+}
+
+.instagram-background {
+  background: linear-gradient(to bottom, #405de6 0%, #c13584 86%);
 }
 
 .css-6hp17o-MuiList-root-MuiMenu-list {
@@ -130,7 +151,7 @@ figure.table[style] {
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  a:not(.ck-editor__editable *, .logo),
+  a:not(.ck-editor__editable *, .logo, .except),
   h1:not(.ck-editor__editable *),
   h2:not(.ck-editor__editable *, .except),
   h3:not(.ck-editor__editable *),
