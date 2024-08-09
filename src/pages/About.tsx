@@ -1,7 +1,7 @@
-import InstagramIcon from "../../public/icons/social media icons/instagram-svgrepo-com.svg";
-import LinkedInIcon from "../../public/icons/social media icons/linkedin-rounded-border-svgrepo-com.svg";
-import GithubIcon from "../../public/icons/social media icons/github-142-svgrepo-com.svg";
-import Xtwitter from "../../public/icons/social media icons/xtwiiter.svg";
+import InstagramIcon from "/icons/social media icons/instagram-svgrepo-com.svg";
+import LinkedInIcon from "/icons/social media icons/linkedin-rounded-border-svgrepo-com.svg";
+import GithubIcon from "/icons/social media icons/github-142-svgrepo-com.svg";
+import Xtwitter from "/icons/social media icons/xtwiiter.svg";
 
 function About() {
   // const { windowWidth } = useWindowSize();
@@ -17,7 +17,7 @@ function About() {
               width={160}
               height={160}
               className="h-full w-full rounded-full object-cover ring-1 ring-blue-400  dark:ring-blue-500"
-              src="../public/images/josuedelossantos.jpg"
+              src="/images/josuedelossantos.jpg"
             />
           </div>
 
@@ -82,7 +82,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={LinkedInIcon} alt="Linkedin icon" />
                   </div>
-                  <div className="font-Linkedin flex items-center text-sm font-semibold text-white">
+                  <div className="flex items-center font-Linkedin text-sm font-semibold text-white">
                     JOSUE DE LOS SANTOS
                   </div>
                 </div>
@@ -95,7 +95,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={Xtwitter} alt="Xtwitter icon" />
                   </div>
-                  <div className="font-Roboto flex items-center text-sm font-semibold text-white">
+                  <div className="flex items-center font-Roboto text-sm font-semibold text-white">
                     @joshcoder2000
                   </div>
                 </div>
@@ -108,7 +108,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={InstagramIcon} alt="Instagram icon" />
                   </div>
-                  <div className="font-Instagram flex items-center text-sm font-bold text-white">
+                  <div className="flex items-center font-Instagram text-sm font-bold text-white">
                     joshcoder2000
                   </div>
                 </div>
@@ -121,7 +121,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={GithubIcon} alt="Github icon" />
                   </div>
-                  <div className="font-Github flex items-center text-sm text-white">
+                  <div className="flex items-center font-Github text-sm text-white">
                     JosueDeLosSantos
                   </div>
                 </div>
