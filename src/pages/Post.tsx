@@ -230,7 +230,7 @@ function Post({ server }: { server: string }) {
 
   return (
     <div className="min-h-screen bg-slate-100 lg:w-[94.5%] dark:bg-slate-950">
-      <div className="flex gap-4 px-4 pb-4 max-lg:pt-14 lg:pt-4">
+      <div className="flex gap-4 pb-4 max-lg:pt-14 sm:px-4 lg:pt-4">
         <ThemeProvider theme={theme}>
           <div
             className={
