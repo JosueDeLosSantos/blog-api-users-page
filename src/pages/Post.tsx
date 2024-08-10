@@ -241,13 +241,7 @@ function Post({ server }: { server: string }) {
           >
             <div>
               <IconButton
-                sx={{
-                  "@media (prefers-color-scheme: dark)": {
-                    "&:hover": {
-                      backgroundColor: "#1e293b",
-                    },
-                  },
-                }}
+                className="icons-hover"
                 title="See Comments"
                 onClick={() => ScrollTo("comments")}
               >
@@ -264,13 +258,7 @@ function Post({ server }: { server: string }) {
 
             <div>
               <IconButton
-                sx={{
-                  "@media (prefers-color-scheme: dark)": {
-                    "&:hover": {
-                      backgroundColor: "#1e293b",
-                    },
-                  },
-                }}
+                className="icons-hover"
                 title="Back to top"
                 onClick={() => ScrollTo("posts")}
               >
@@ -423,15 +411,8 @@ function Post({ server }: { server: string }) {
                       {member === "admin" && user._id === comment.author && (
                         <div>
                           <IconButton
-                            sx={{
-                              "@media (prefers-color-scheme: dark)": {
-                                "&:hover": {
-                                  backgroundColor: "#334155",
-                                },
-                              },
-                            }}
                             id={comment._id}
-                            className="icons absolute right-[-15px] top-[-15px] max-md:right-[-35px] max-md:top-[-50px]"
+                            className="icons comments-icon absolute right-[-15px] top-[-15px] max-md:right-[-35px] max-md:top-[-50px]"
                             onClick={handleClick}
                             style={{ display: `${commentsOptionsVisibility}` }}
                           >
@@ -448,16 +429,9 @@ function Post({ server }: { server: string }) {
                             }}
                           >
                             <MenuItem
+                              className="comments-options"
                               sx={{
                                 display: `${commentsOptionsVisibility}`,
-                                "@media (prefers-color-scheme: dark)": {
-                                  backgroundColor: "#334155",
-                                  borderBottom: "1px solid #737374",
-                                },
-                                "&:hover": {
-                                  backgroundColor: "#3b82f6",
-                                  color: "white",
-                                },
                               }}
                               onClick={(e: React.MouseEvent) => {
                                 handleClose(e);
@@ -466,20 +440,12 @@ function Post({ server }: { server: string }) {
                               Delete
                             </MenuItem>
                             <MenuItem
+                              className="comments-options"
                               onClick={(e: React.MouseEvent) => {
                                 handleClose(e);
                               }}
                               sx={{
                                 display: `${commentsOptionsVisibility}`,
-                                "@media (prefers-color-scheme: dark)": {
-                                  backgroundColor: "#334155",
-                                  // without the following border, the text color is not visible
-                                  borderBottom: "0px solid #737374",
-                                },
-                                "&:hover": {
-                                  backgroundColor: "#3b82f6",
-                                  color: "white",
-                                },
                               }}
                             >
                               Edit

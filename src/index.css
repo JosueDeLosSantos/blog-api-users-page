@@ -211,6 +211,24 @@ figure.table[style] {
   .divider {
     background: white;
   }
+
+  .icons-hover:hover {
+    background-color: #1e293b !important;
+  }
+
+  .comments-icon:hover {
+    background-color: #334155 !important;
+  }
+
+  .comments-options {
+    background-color: #334155 !important;
+    border-bottom: 1px solid #737374 !important;
+  }
+
+  .comments-options:hover {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+  }
 }
 
 @keyframes gradient {
