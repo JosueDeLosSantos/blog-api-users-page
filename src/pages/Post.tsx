@@ -429,7 +429,7 @@ function Post({ server }: { server: string }) {
                             }}
                           >
                             <MenuItem
-                              className="comments-options"
+                              // className="comments-options"
                               sx={{
                                 display: `${commentsOptionsVisibility}`,
                               }}
@@ -440,7 +440,7 @@ function Post({ server }: { server: string }) {
                               Delete
                             </MenuItem>
                             <MenuItem
-                              className="comments-options"
+                              // className="comments-options"
                               onClick={(e: React.MouseEvent) => {
                                 handleClose(e);
                               }}
