@@ -12,7 +12,7 @@ import About from "../pages/About";
 
 const Router = () => {
   //https://dummy-blog.adaptable.app/
-  const server = "https://dummy-blog.adaptable.app/";
+  const server = "https://jcoder-api.adaptable.app/";
 
   const router = createBrowserRouter([
     {
