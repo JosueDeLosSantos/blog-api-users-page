@@ -61,9 +61,9 @@ function About() {
             </p>
 
             <p>
-              I understand the challenges of learning programming independently;
-              it requires significant time, effort, and enthusiasm. However,
-              with persistence, almost anything is possible.
+              I understand the challenges of learning programming; it requires
+              significant time, effort, and enthusiasm. However, with
+              persistence, almost anything is possible.
             </p>
 
             <p>
