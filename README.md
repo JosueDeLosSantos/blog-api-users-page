@@ -24,7 +24,7 @@ This repository contains the [users page](https://blog-api-users-page.vercel.app
 
 - **Comments Management**: Create, update, and delete comments.
   <div>
-    <img alt="comments edition" src="./public/images/comments-edition.jpg" width="200"/>
+    <img alt="comments edition" src="./public/images/comments-edition.jpg" width="200"/>&nbsp;&nbsp;&nbsp;
     <img alt="comments deletion" src="./public/images/comments-deletion.jpg" width="200"/>
   </div>
 
