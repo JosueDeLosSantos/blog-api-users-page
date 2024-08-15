@@ -1,31 +1,90 @@
-# React + TypeScript + Vite
+# Blog API Admin Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the [users page](https://blog-api-users-page.vercel.app/) for the JCODER blog, built using the following technologies:
 
-Currently, two official plugins are available:
+<div style="display:flex;">
+  <img width="50" src="./public/png icons/vite-icon.png" alt="vite logo"/>
+  <img width="50" src="./public/png icons/nodejs-icon.png" alt="nodejs logo"/>
+  <img width="50" src="./public/png icons/react-icon.png" alt="react logo"/>
+  <img width="50" src="./public/png icons/redux.png" alt="redux logo"/>
+  <img width="50" src="./public/png icons/MUI.png" alt="MUI logo"/>
+  <img width="50" src="./public/png icons/typescript-icon.png" alt="typescript logo"/>
+   <img width="50" src="./public/png icons/tailwind-icon.png" alt="tailwind logo"/>
+   <img width="50" src="./public/png icons/css-icon.png" alt="css logo"/>
+   <img width="50" src="./public/png icons/html-icon.png" alt="html logo"/>
+</div>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **User Authentication**: Sign up and log in pages with secure authentication.
+<div style="display: flex;">
+  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="195" />&nbsp;&nbsp;&nbsp; 
+  <img alt="login screen" src="./public/images/login-screen.jpg" width="200"/>
+</div>
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Comments Management**: Create, update, and delete comments.
+  <div>
+    <img alt="comments edition" src="./public/images/comments-edition.jpg" width="200"/>
+    <img alt="comments deletion" src="./public/images/comments-deletion.jpg" width="200"/>
+  </div>
 
-- Configure the top-level `parserOptions` property like this:
+- **Dark Mode**: Automatic dark mode styles for a better user experience.
+<div styles="display: flex;">
+  <img alt="login screen" src="./public/images/login-screen-dark.jpg" width="200"/>&nbsp;&nbsp;&nbsp;
+  <img alt="main screen" src="./public/images/desktop-main-dark.jpg" width="200"/>&nbsp;&nbsp;&nbsp;
+  <img alt="post screen" src="./public/images/post-main-dark.jpg" width="200"/>
+</div>
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **Responsive Design**: Optimized for various screen sizes.
+<div styles="display: flex;">
+  <img alt="Phones screens" src="./public/images/phone-main.jpg" width="70"/>&nbsp;&nbsp;&nbsp;
+  <img alt="Tablets screens" src="./public/images/tablet-main.jpg" width="115"/>&nbsp;&nbsp;&nbsp;
+  <img alt="Desktops screens" src="./public/images/desktop-screen.jpg" width="205"/>
+</div>
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-# blog-api-users-page
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/JosueDeLosSantos/blog-api-users-page.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd blog-api-users-page
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+1. Start the development server:
+   ```bash
+   npm run dev
+   ```
+2. Open your browser and navigate to `http://localhost:5173`.
+
+## Deployment
+
+This project is configured for deployment on Vercel. To deploy, follow these steps:
+
+1. Install Vercel CLI:
+   ```bash
+   npm install -g vercel
+   ```
+2. Deploy the application:
+   ```bash
+   vercel
+   ```
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
