@@ -39,7 +39,7 @@ This repository contains the [users page](https://blog-api-users-page.vercel.app
 <div styles="display: flex;">
   <img alt="Phones screens" src="./public/images/phone-main.jpg" width="70"/>&nbsp;&nbsp;&nbsp;
   <img alt="Tablets screens" src="./public/images/tablet-main.jpg" width="115"/>&nbsp;&nbsp;&nbsp;
-  <img alt="Desktops screens" src="./public/images/desktop-screen.jpg" width="205"/>
+  <img alt="Desktops screens" src="./public/images/desktop-main.jpg" width="205"/>
 </div>
 
 ## Getting Started
