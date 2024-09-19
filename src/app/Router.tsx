@@ -13,7 +13,7 @@ import About from "../pages/About";
 const Router = () => {
   // https://localhost:3000/
   // https://jcoder-api.adaptable.app/
-  const server = "https://localhost:3000/";
+  const server = "https://blog-api-6mno.onrender.com/";
 
   const router = createBrowserRouter([
     {
